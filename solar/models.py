@@ -83,7 +83,7 @@ class LoggerCategory(models.Model):
 
 
 class Device(models.Model):
-    device_id = models.CharField(unique=True)
+    device_id = models.CharField(max_length=100, unique=True)
     device_name = models.CharField(max_length=100)
     powerplant = models.ForeignKey(PowerPlant, on_delete=models.CASCADE)
     logger_name = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)

@@ -19,7 +19,7 @@ class UtilitiesCredentialAdmin(admin.ModelAdmin):
 class PowerPlantAdmin(admin.ModelAdmin):
     list_display = ('plant_id', 'plant_name',
                     'resource', 'capacity_dc', 'capacity_ac',
-                    'utilities', 'companies')
+                    'utilities')
 
 
 @admin.register(models.Device)
