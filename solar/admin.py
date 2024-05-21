@@ -3,6 +3,7 @@ from . import models
 
 
 admin.site.register(models.UtilitiesList)
+admin.site.register(models.LoggerCategory)
 
 
 @admin.register(models.Company)
@@ -23,5 +24,7 @@ class PowerPlantAdmin(admin.ModelAdmin):
 
 
 @admin.register(models.Device)
-class CurtailmentEventAdmin(admin.ModelAdmin):
+class DeviceEventAdmin(admin.ModelAdmin):
     list_display = ('logger_name', 'device_id', 'device_name', 'powerplant')
+
+

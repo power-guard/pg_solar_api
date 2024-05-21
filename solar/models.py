@@ -12,6 +12,10 @@ class Company(models.Model):
     phone_number = models.CharField(max_length=20, unique=True)
     note = models.TextField(blank=True, null=True)
 
+    class Meta:
+        # Define unique constraint
+        unique_together = [('name', 'email', 'phone_number')]
+
     def __str__(self):
         return self.name
 
@@ -20,7 +24,7 @@ class UtilitiesList(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
-        return f"{self.name}"
+        return self.name
 
 
 class UtilitiesCredential(models.Model):
@@ -29,8 +33,12 @@ class UtilitiesCredential(models.Model):
     website_id = models.CharField(max_length=100)
     website_pwd = models.CharField(max_length=100)
 
+    class Meta:
+        # Define unique constraint
+        unique_together = [('utility_name', 'website_link', 'website_id')]
+    
     def __str__(self):
-        return f"{self.utility_list} - {self.website_id}"
+        return self.utility_name
 
 
 class PowerPlant(models.Model):
@@ -71,15 +79,19 @@ class PowerPlant(models.Model):
                                   on_delete=models.SET_NULL)
     companies = models.ManyToManyField(Company)
 
+    class Meta:
+        # Define unique constraint
+        unique_together = [('plant_id', 'plant_name')]
+    
     def __str__(self):
         return self.plant_name
 
 
 class LoggerCategory(models.Model):
-    logger_name = models.CharField(max_length=100)
+    logger_name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
-        return self.name
+        return self.logger_name
 
 
 class Device(models.Model):
@@ -87,6 +99,3 @@ class Device(models.Model):
     device_name = models.CharField(max_length=100)
     powerplant = models.ForeignKey(PowerPlant, on_delete=models.CASCADE)
     logger_name = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.name
