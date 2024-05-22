@@ -3,21 +3,14 @@ Serializers for solar APIs.
 """
 
 from rest_framework import serializers
-from .models import (
-    Company,
-    UtilitiesList,
-    UtilitiesCredential,
-    PowerPlant,
-    LoggerCategory,
-    Device
-)
+from . import models
 
 
 class CompanySerializer(serializers.ModelSerializer):
     """Serializers for Company"""
 
     class Meta:
-        model = Company
+        model = models.Company
         fields = ['id', 'name', 'address',
                   'website_url', 'email',
                   'phone_number', 'note']
@@ -26,7 +19,7 @@ class CompanySerializer(serializers.ModelSerializer):
 
 class UtilitiesListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UtilitiesList
+        model = models.UtilitiesList
         fields = ['id', 'name']
         read_only_fiels = ['id']
 
@@ -36,7 +29,7 @@ class UtilitiesCredentialSerializer(serializers.ModelSerializer):
     utility_list = UtilitiesListSerializer(read_only=True)
 
     class Meta:
-        model = UtilitiesCredential
+        model = models.UtilitiesCredential
         fields = ['id', 'utility_name', 'website_link',
                   'website_id', 'website_pwd', 'utility_list']
         read_only_fiels = ['id']
@@ -44,17 +37,10 @@ class UtilitiesCredentialSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         utility_name = validated_data.pop('utility_name')
         # Get or create UtilitiesList instance
-        utilities_list, created = UtilitiesList.objects.get_or_create(name=utility_name)
-        # Check for duplicates before creating UtilitiesCredential
-        if UtilitiesCredential.objects.filter(
-                utility_name=utilities_list, 
-                website_link=validated_data['website_link'],
-                website_id=validated_data['website_id']
-            ).exists():
-            raise serializers.ValidationError("This credential already exists.")
+        utilities_list, created = models.UtilitiesList.objects.get_or_create(name=utility_name)
         
         # Create the UtilitiesCredential instance
-        utilities_credential = UtilitiesCredential.objects.create(
+        utilities_credential = models.UtilitiesCredential.objects.create(
             utility_name=utilities_list,
             **validated_data
         )
@@ -64,7 +50,7 @@ class UtilitiesCredentialSerializer(serializers.ModelSerializer):
         utility_name = validated_data.pop('utility_name', None)
         if utility_name:
             # Get or create UtilitiesList instance
-            utilities_list, created = UtilitiesList.objects.get_or_create(name=utility_name)
+            utilities_list, created = models.UtilitiesList.objects.get_or_create(name=utility_name)
             instance.utility_name = utilities_list
 
         instance.website_link = validated_data.get('website_link', instance.website_link)
@@ -82,7 +68,7 @@ class UtilitiesCredentialSerializer(serializers.ModelSerializer):
 
 class PowerPlantSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PowerPlant
+        model = models.PowerPlant
         fields = ['id', 'plant_id', 'plant_name', 'resource', 'status',
                   'capacity_dc', 'capacity_ac', 'location', 'image',
                   'latitude', 'longitude', 'utilities', 'companies']
@@ -90,7 +76,7 @@ class PowerPlantSerializer(serializers.ModelSerializer):
 
 class LoggerCategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = LoggerCategory
+        model = models.LoggerCategory
         fields = ['id', 'logger_name']
         read_only_fiels = ['id']
 
@@ -98,6 +84,28 @@ class LoggerCategorySerializer(serializers.ModelSerializer):
 class DeviceSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Device
+        model = models.Device
         fields = ['id', 'device_id', 'device_name', 'powerplant', 'logger_name']
         read_only_fiels = ['id']
+
+
+class PlantMonthlyRevenueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.PlantMonthlyRevenue
+        fields = '__all__'
+
+class PlantMonthlyExpenseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.PlantMonthlyExpense
+        fields = '__all__'
+
+class PlantDailyProductionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.PlantDailyProduction
+        fields = '__all__'
+
+class CurtailmentEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.CurtailmentEvent
+        fields = '__all__'
+

@@ -9,6 +9,10 @@ router.register('credentials', views.UtilitiesCredentialViewSet)
 router.register('powerplants', views.PowerPlantViewSet)
 router.register('loggercategories', views.LoggerCategoryViewSet)
 router.register('devices', views.DeviceViewSet)
+router.register(r'plant-monthly-revenue', views.PlantMonthlyRevenueViewSet)
+router.register(r'plant-monthly-expense', views.PlantMonthlyExpenseViewSet)
+router.register(r'plant-daily-production', views.PlantDailyProductionViewSet)
+router.register(r'curtailment-event', views.CurtailmentEventViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

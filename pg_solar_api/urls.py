@@ -29,5 +29,5 @@ urlpatterns = [
          name='api-docs'),
     path('', RedirectView.as_view(url='/api/docs/', permanent=False), name='index'),
     path('api/user/', include('user.urls')),
-    path('api/solar/', include('solar.urls')),
+    path('api/core/', include('core.urls')),
 ]
