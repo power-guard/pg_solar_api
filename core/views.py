@@ -1,4 +1,5 @@
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, status
+from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from . import models
@@ -51,6 +52,7 @@ class PowerPlantViewSet(mixins.ListModelMixin,
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
+
 class LoggerCategoryViewSet(mixins.ListModelMixin,
                      mixins.CreateModelMixin,
                      viewsets.GenericViewSet):
@@ -60,14 +62,46 @@ class LoggerCategoryViewSet(mixins.ListModelMixin,
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
+
 class DeviceViewSet(mixins.ListModelMixin,
-                     mixins.CreateModelMixin,
-                     viewsets.GenericViewSet):
+                    mixins.CreateModelMixin,
+                    viewsets.GenericViewSet):
     """View for managing Device API"""
     serializer_class = serializers.DeviceSerializer
     queryset = models.Device.objects.all()
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        data = request.data
+
+        # Extract plant_id, plant_name, and logger_name from request data
+        plant_id = data.get('plant_id')
+        plant_name = data.get('plant_name')
+        logger_name_str = data.get('logger_name')
+
+        # Get or create PowerPlant without updating existing records
+        powerplant, created = models.PowerPlant.objects.get_or_create(
+            plant_id=plant_id,
+            defaults={'plant_name': plant_name} if plant_name else {}
+        )
+
+        # Get or create LoggerCategory without updating existing records
+        logger_category, _ = models.LoggerCategory.objects.get_or_create(
+            logger_name=logger_name_str
+        )
+
+        # Update the request data to include the foreign keys
+        data['powerplant'] = powerplant.id
+        data['logger_name'] = logger_category.id
+
+        # Use the serializer to create the Device
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class PlantMonthlyRevenueViewSet(mixins.ListModelMixin,

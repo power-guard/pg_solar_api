@@ -24,7 +24,7 @@ class UtilitiesList(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
 
 class UtilitiesCredential(models.Model):
@@ -36,9 +36,6 @@ class UtilitiesCredential(models.Model):
     class Meta:
         # Define unique constraint
         unique_together = [('utility_name', 'website_link', 'website_id')]
-    
-    def __str__(self):
-        return self.utility_name
 
 
 class PowerPlant(models.Model):
@@ -50,37 +47,21 @@ class PowerPlant(models.Model):
         ('active', 'Active'),
         ('deactivated', 'Deactivated'),
     ]
+    
     plant_id = models.CharField(max_length=50)
     plant_name = models.CharField(max_length=100)
-    resource = models.CharField(max_length=100,
-                                choices=RESOURCE_CHOICES,
-                                default='Solar')
-    status = models.CharField(max_length=20,
-                              choices=STATUS_CHOICES,
-                              default='active')
-    capacity_dc = models.DecimalField(max_digits=10,
-                                      decimal_places=2,
-                                      blank=True, null=True)
-    capacity_ac = models.DecimalField(max_digits=10,
-                                      decimal_places=2,
-                                      blank=True, null=True)
-    location = models.CharField(max_length=255,
-                                blank=True, null=True)
-    image = models.ImageField(upload_to='plant_images/',
-                              blank=True, null=True)
-    latitude = models.DecimalField(max_digits=9,
-                                   decimal_places=6, blank=True,
-                                   null=True)
-    longitude = models.DecimalField(max_digits=9,
-                                    decimal_places=6, blank=True,
-                                    null=True)
-    utilities = models.ForeignKey(UtilitiesList,
-                                  blank=True, null=True,
-                                  on_delete=models.SET_NULL)
-    companies = models.ManyToManyField(Company)
+    resource = models.CharField(max_length=100, choices=RESOURCE_CHOICES, default='Solar')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='active')
+    capacity_dc = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    capacity_ac = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    location = models.CharField(max_length=255, blank=True, null=True)
+    image = models.ImageField(upload_to='plant_images/', blank=True, null=True)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+    utilities = models.ForeignKey('UtilitiesList', blank=True, null=True, on_delete=models.SET_NULL)
+    companies = models.ManyToManyField('Company', blank=True)
 
     class Meta:
-        # Define unique constraint
         unique_together = [('plant_id', 'plant_name')]
     
     def __str__(self):
