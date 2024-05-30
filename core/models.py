@@ -20,24 +20,6 @@ class Company(models.Model):
         return self.name
 
 
-class UtilitiesList(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-    def __str__(self):
-        return f"{self.name}"
-
-
-class UtilitiesCredential(models.Model):
-    utility_name = models.ForeignKey(UtilitiesList, on_delete=models.CASCADE)
-    website_link = models.URLField()
-    website_id = models.CharField(max_length=100)
-    website_pwd = models.CharField(max_length=100)
-
-    class Meta:
-        # Define unique constraint
-        unique_together = [('utility_name', 'website_link', 'website_id')]
-
-
 class PowerPlant(models.Model):
     RESOURCE_CHOICES = [
         ('Solar', 'Solar'),
@@ -62,8 +44,9 @@ class PowerPlant(models.Model):
     companies = models.ManyToManyField('Company', blank=True)
 
     class Meta:
+        # Define unique constraint based on plant_id, plant_name.
         unique_together = [('plant_id', 'plant_name')]
-    
+
     def __str__(self):
         return self.plant_name
 
@@ -76,11 +59,65 @@ class LoggerCategory(models.Model):
 
 
 class Device(models.Model):
-    device_id = models.CharField(max_length=100, unique=True)
+    device_id = models.CharField(max_length=100)
     device_name = models.CharField(max_length=100)
-    powerplant = models.ForeignKey(PowerPlant, on_delete=models.CASCADE)
+    #powerplant = models.ForeignKey(PowerPlant, on_delete=models.CASCADE)
     logger_name = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"ID {self.device_id} , Name {self.device_name}"
+
+    class Meta:
+            unique_together = [('device_id', 'device_name')]
+
+class DevicePowerGen(models.Model):
+    device_id = models.ForeignKey(Device, on_delete=models.CASCADE)
+    logger_name = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
+    power_gen = models.DecimalField(max_digits=10, decimal_places=4)  # Accepts floating-point numbers with 4 digits after the decimal
+    date = models.DateField(auto_now_add=True)  # Automatically sets the current date upon creation
+
+    class Meta:
+            unique_together = [('device_id', 'logger_name')]
+
+class LoggerPowerGen(models.Model):
+    logger_name = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
+    power_gen = models.DecimalField(max_digits=10, decimal_places=4)
+    date = models.DateField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = [('logger_name', 'date')]
+
+
+class CurtailmentEvent(models.Model):
+    plant = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
+    date = models.DateField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+
+    def __str__(self):
+        return f"Curtailment Event for {self.plant.plant_name} on {self.date}"
+
+
+"""
+Utility data Model are created below this
+"""
+
+class UtilitiesList(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class UtilitiesCredential(models.Model):
+    utility_name = models.ForeignKey(UtilitiesList, on_delete=models.CASCADE)
+    website_link = models.URLField()
+    website_id = models.CharField(max_length=100)
+    website_pwd = models.CharField(max_length=100)
+
+    class Meta:
+        # Define unique constraint
+        unique_together = [('utility_name', 'website_link', 'website_id')]
 
 
 class PlantMonthlyRevenue(models.Model):
@@ -138,11 +175,4 @@ class PlantDailyProduction(models.Model):
         unique_together = [('plant_id', 'prod_date')]
 
 
-class CurtailmentEvent(models.Model):
-    plant = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
-    date = models.DateField()
-    start_time = models.TimeField()
-    end_time = models.TimeField()
 
-    def __str__(self):
-        return f"Curtailment Event for {self.plant.plant_name} on {self.date}"

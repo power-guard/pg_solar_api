@@ -85,7 +85,7 @@ class DeviceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Device
-        fields = ['id', 'device_id', 'device_name', 'powerplant', 'logger_name']
+        fields = ['id', 'device_id', 'device_name', 'logger_name']
         read_only_fiels = ['id']
 
 
@@ -109,3 +109,7 @@ class CurtailmentEventSerializer(serializers.ModelSerializer):
         model = models.CurtailmentEvent
         fields = '__all__'
 
+class DevicePowerGenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.DevicePowerGen
+        fields = '__all__'

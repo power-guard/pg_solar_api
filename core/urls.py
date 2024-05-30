@@ -13,6 +13,7 @@ router.register(r'plant-monthly-revenue', views.PlantMonthlyRevenueViewSet)
 router.register(r'plant-monthly-expense', views.PlantMonthlyExpenseViewSet)
 router.register(r'plant-daily-production', views.PlantDailyProductionViewSet)
 router.register(r'curtailment-event', views.CurtailmentEventViewSet)
+router.register(r'device-power-gen', views.DevicePowerGenViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

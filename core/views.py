@@ -75,24 +75,15 @@ class DeviceViewSet(mixins.ListModelMixin,
     def create(self, request, *args, **kwargs):
         data = request.data
 
-        # Extract plant_id, plant_name, and logger_name from request data
-        plant_id = data.get('plant_id')
-        plant_name = data.get('plant_name')
+        # Extract logger_name from request data
         logger_name_str = data.get('logger_name')
-
-        # Get or create PowerPlant without updating existing records
-        powerplant, created = models.PowerPlant.objects.get_or_create(
-            plant_id=plant_id,
-            defaults={'plant_name': plant_name} if plant_name else {}
-        )
 
         # Get or create LoggerCategory without updating existing records
         logger_category, _ = models.LoggerCategory.objects.get_or_create(
             logger_name=logger_name_str
         )
 
-        # Update the request data to include the foreign keys
-        data['powerplant'] = powerplant.id
+        # Update the request data to include the foreign key for logger_category
         data['logger_name'] = logger_category.id
 
         # Use the serializer to create the Device
@@ -140,5 +131,13 @@ class CurtailmentEventViewSet(mixins.ListModelMixin,
     
     queryset = models.CurtailmentEvent.objects.all()
     serializer_class = serializers.CurtailmentEventSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+class DevicePowerGenViewSet(mixins.ListModelMixin,
+                            mixins.CreateModelMixin,
+                            viewsets.GenericViewSet):
+    queryset = models.DevicePowerGen.objects.all()
+    serializer_class = serializers.DevicePowerGenSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]

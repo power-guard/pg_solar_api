@@ -25,7 +25,7 @@ class PowerPlantAdmin(admin.ModelAdmin):
 
 @admin.register(models.Device)
 class DeviceEventAdmin(admin.ModelAdmin):
-    list_display = ('logger_name', 'device_id', 'device_name', 'powerplant')
+    list_display = ('logger_name', 'device_id', 'device_name')
 
 
 
@@ -52,3 +52,12 @@ class PlantMonthlyExpensesAdmin(admin.ModelAdmin):
 @admin.register(models.CurtailmentEvent)
 class CurtailmentEventAdmin(admin.ModelAdmin):
     list_display = ('plant', 'date', 'start_time', 'end_time')
+
+
+@admin.register(models.DevicePowerGen)
+class DevicePowerGenAdmin(admin.ModelAdmin):
+    list_display = ('logger_name', 'device_id', 'power_gen', 'date')
+
+@admin.register(models.LoggerPowerGen)
+class LoggerPowerGenAdmin(admin.ModelAdmin):
+    list_display = ('logger_name', 'power_gen', 'date')
