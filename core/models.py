@@ -77,7 +77,7 @@ class DevicePowerGen(models.Model):
     date = models.DateField(auto_now_add=True)  # Automatically sets the current date upon creation
 
     class Meta:
-            unique_together = [('device_id', 'logger_name')]
+            unique_together = [('device_id', 'logger_name', 'date')]
 
 class LoggerPowerGen(models.Model):
     logger_name = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
