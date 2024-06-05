@@ -81,12 +81,28 @@ class LoggerCategorySerializer(serializers.ModelSerializer):
         read_only_fiels = ['id']
 
 
+class LoggerPowerGenSerializer(serializers.ModelSerializer):
+    logger_name = serializers.CharField(source='logger_name.logger_name')  # Use the logger_name field from LoggerCategory
+
+    class Meta:
+        model = models.LoggerPowerGen
+        fields = ['id', 'logger_name', 'power_gen', 'date']
+        read_only_fields = ['id']
+
+    def create(self, validated_data):
+        logger_name_data = validated_data.pop('logger_name')
+        logger_name, created = models.LoggerCategory.objects.get_or_create(logger_name=logger_name_data['logger_name'])
+        validated_data['logger_name'] = logger_name
+        return models.LoggerPowerGen.objects.create(**validated_data)
+
+
 class DeviceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Device
         fields = ['id', 'device_id', 'device_name', 'logger_name']
         read_only_fiels = ['id']
+
 
 
 class PlantMonthlyRevenueSerializer(serializers.ModelSerializer):

@@ -141,3 +141,11 @@ class DevicePowerGenViewSet(mixins.ListModelMixin,
     serializer_class = serializers.DevicePowerGenSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+
+class LoggerPowerGenViewSet(mixins.ListModelMixin,
+                            mixins.CreateModelMixin,
+                            viewsets.GenericViewSet):
+    queryset = models.LoggerPowerGen.objects.all()
+    serializer_class = serializers.LoggerPowerGenSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
