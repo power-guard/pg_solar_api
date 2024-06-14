@@ -2,6 +2,7 @@
 Creating the model to store the solar data.
 """
 from django.db import models
+from datetime import date
 
 
 class Company(models.Model):
@@ -74,7 +75,8 @@ class DevicePowerGen(models.Model):
     device_id = models.ForeignKey(Device, on_delete=models.CASCADE)
     logger_name = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
     power_gen = models.DecimalField(max_digits=10, decimal_places=4)  # Accepts floating-point numbers with 4 digits after the decimal
-    date = models.DateField(auto_now_add=True)  # Automatically sets the current date upon creation
+    date = models.DateField(null=True, blank=True,default=date.today)  # Automatically sets the current date upon creation
+    
 
     class Meta:
             unique_together = [('device_id', 'logger_name', 'date')]
@@ -82,7 +84,7 @@ class DevicePowerGen(models.Model):
 class LoggerPowerGen(models.Model):
     logger_name = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
     power_gen = models.DecimalField(max_digits=10, decimal_places=4)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(null=True, blank=True,default=date.today)
     
     class Meta:
         unique_together = [('logger_name', 'date')]
