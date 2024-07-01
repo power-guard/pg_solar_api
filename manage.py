@@ -1,12 +1,10 @@
-#!/usr/bin/env python
-"""Django's command-line utility for administrative tasks."""
+# pg_solar_api/manage.py
+
 import os
 import sys
 
-
 def main():
-    """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pg_solar_api.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pg_solar_api.config.settings.local' if 'runserver' in sys.argv else 'pg_solar_api.config.settings.production')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -16,7 +14,6 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
-
 
 if __name__ == '__main__':
     main()
