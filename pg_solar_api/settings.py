@@ -97,7 +97,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # Adjust as per your static files settings
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
+STATIC_ROOT = "/var/www/pg_solar_api/static/"
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = "/var/www/pg_solar_api/media/"
 
 #for the modification of the user
 AUTH_USER_MODEL = 'user.User'
