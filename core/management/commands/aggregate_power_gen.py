@@ -9,7 +9,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         # Get the current date
         current_date = date.today()
-        
+        print(date)
         # Aggregate power_gen by logger_name and date
         aggregated_data = DevicePowerGen.objects.filter(date=current_date).values('logger_name').annotate(total_power_gen=Sum('power_gen'))
         
