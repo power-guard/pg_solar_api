@@ -63,36 +63,36 @@ class LoggerCategoryViewSet(mixins.ListModelMixin,
     permission_classes = [IsAuthenticated]
 
 
-class DeviceViewSet(mixins.ListModelMixin,
-                    mixins.CreateModelMixin,
-                    viewsets.GenericViewSet):
-    """View for managing Device API"""
-    serializer_class = serializers.DeviceSerializer
-    queryset = models.Device.objects.all()
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+# class DeviceViewSet(mixins.ListModelMixin,
+#                     mixins.CreateModelMixin,
+#                     viewsets.GenericViewSet):
+#     """View for managing Device API"""
+#     serializer_class = serializers.DeviceSerializer
+#     queryset = models.Device.objects.all()
+#     authentication_classes = [TokenAuthentication]
+#     permission_classes = [IsAuthenticated]
 
-    def create(self, request, *args, **kwargs):
-        data = request.data
+#     def create(self, request, *args, **kwargs):
+#         data = request.data
 
-        # Extract logger_name from request data
-        logger_name_str = data.get('logger_name')
+#         # Extract logger_name from request data
+#         logger_name_str = data.get('logger_name')
 
-        # Get or create LoggerCategory without updating existing records
-        logger_category, _ = models.LoggerCategory.objects.get_or_create(
-            logger_name=logger_name_str
-        )
+#         # Get or create LoggerCategory without updating existing records
+#         logger_category, _ = models.LoggerCategory.objects.get_or_create(
+#             logger_name=logger_name_str
+#         )
 
-        # Update the request data to include the foreign key for logger_category
-        data['logger_name'] = logger_category.id
+#         # Update the request data to include the foreign key for logger_category
+#         data['logger_name'] = logger_category.id
 
-        # Use the serializer to create the Device
-        serializer = self.get_serializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
+#         # Use the serializer to create the Device
+#         serializer = self.get_serializer(data=data)
+#         serializer.is_valid(raise_exception=True)
+#         self.perform_create(serializer)
 
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+#         headers = self.get_success_headers(serializer.data)
+#         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class PlantMonthlyRevenueViewSet(mixins.ListModelMixin,
@@ -134,13 +134,13 @@ class CurtailmentEventViewSet(mixins.ListModelMixin,
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-class DevicePowerGenViewSet(mixins.ListModelMixin,
-                            mixins.CreateModelMixin,
-                            viewsets.GenericViewSet):
-    queryset = models.DevicePowerGen.objects.all()
-    serializer_class = serializers.DevicePowerGenSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+# class DevicePowerGenViewSet(mixins.ListModelMixin,
+#                             mixins.CreateModelMixin,
+#                             viewsets.GenericViewSet):
+#     queryset = models.DevicePowerGen.objects.all()
+#     serializer_class = serializers.DevicePowerGenSerializer
+#     authentication_classes = [TokenAuthentication]
+#     permission_classes = [IsAuthenticated]
 
 class LoggerPowerGenViewSet(mixins.ListModelMixin,
                             mixins.CreateModelMixin,

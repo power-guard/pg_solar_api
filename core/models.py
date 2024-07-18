@@ -59,32 +59,33 @@ class LoggerCategory(models.Model):
         return self.logger_name
 
 
-class Device(models.Model):
-    device_id = models.CharField(max_length=100)
-    device_name = models.CharField(max_length=100)
-    #powerplant = models.ForeignKey(PowerPlant, on_delete=models.CASCADE)
-    logger_name = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
+# class Device(models.Model):
+#     device_id = models.CharField(max_length=100)
+#     device_name = models.CharField(max_length=100)
+#     #powerplant = models.ForeignKey(PowerPlant, on_delete=models.CASCADE)
+#     logger_name = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return f"ID {self.device_id} , Name {self.device_name}"
+#     def __str__(self):
+#         return f"ID {self.device_id} , Name {self.device_name}"
 
-    class Meta:
-            unique_together = [('device_id', 'device_name')]
+#     class Meta:
+#             unique_together = [('device_id', 'device_name')]
 
-class DevicePowerGen(models.Model):
-    device_id = models.ForeignKey(Device, on_delete=models.CASCADE)
-    logger_name = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
-    power_gen = models.DecimalField(max_digits=10, decimal_places=4)  # Accepts floating-point numbers with 4 digits after the decimal
-    date = models.DateField(null=True, blank=True,default=date.today)  # Automatically sets the current date upon creation
+# class DevicePowerGen(models.Model):
+#     device_id = models.ForeignKey(Device, on_delete=models.CASCADE)
+#     logger_name = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
+#     power_gen = models.DecimalField(max_digits=10, decimal_places=4)  # Accepts floating-point numbers with 4 digits after the decimal
+#     date = models.DateField(null=True, blank=True,default=date.today)  # Automatically sets the current date upon creation
     
 
-    class Meta:
-            unique_together = [('device_id', 'logger_name', 'date')]
+#     class Meta:
+#             unique_together = [('device_id', 'logger_name', 'date')]
 
 class LoggerPowerGen(models.Model):
     logger_name = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
     power_gen = models.DecimalField(max_digits=10, decimal_places=4)
-    date = models.DateField(null=True, blank=True,default=date.today)
+    date = models.DateField(null=True, blank=True, default=date.today)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     
     class Meta:
         unique_together = [('logger_name', 'date')]
