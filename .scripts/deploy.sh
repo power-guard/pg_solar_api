@@ -17,9 +17,9 @@ echo "Virtual env 'env' Activated !"
 echo "Installing Dependencies..."
 pip install -r requirements.txt --no-input
 
-echo "Clearing Cache..."
-python manage.py clean_pyc
-python manage.py clear_cache
+# echo "Clearing Cache..."
+# python manage.py clean_pyc
+# python manage.py clear_cache
 
 echo "Serving Static Files..."
 python manage.py collectstatic --noinput
@@ -34,6 +34,6 @@ echo "Virtual env 'env' Deactivated !"
 
 echo "Reloading App..."
 #kill -HUP `ps -C gunicorn fch -o pid | head -n 1`
-ps aux |grep gunicorn |grep pgsystem | awk '{ print $2 }' |xargs kill -HUP
+ps aux |grep gunicorn |grep pg_solar_api | awk '{ print $2 }' |xargs kill -HUP
 
 echo "Deployment Finished !"
