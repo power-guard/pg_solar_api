@@ -33,18 +33,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'user',
     'rest_framework',
     'rest_framework.authtoken',
-    'drf_spectacular', #automatically generates API documentation
+    'drf_spectacular',
     'core',
     'solar',
-    'utility'
+    'utility',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -52,6 +54,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ALLOWED_ORIGINS = os.getenv('CORE_ALLOWED_URL').split(',')
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
 ROOT_URLCONF = 'pg_solar_api.urls'
 
 TEMPLATES = [
@@ -132,8 +143,3 @@ MEDIA_ROOT = "/var/www/pg_solar_api/media/"
 
 #for the modification of the user
 AUTH_USER_MODEL = 'user.User'
-
-#for Autoschema
-REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-}
