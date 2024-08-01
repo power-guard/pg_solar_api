@@ -1,34 +1,23 @@
 name: Deploy
 
-# Trigger the workflow on push and
-# pull request events on the master branch
 on:
   push:
-    branches: ["master"]
-  pull_request:
-    branches: ["master"]
+    branches:
+      - master
 
-# Authenticate to the server via SSH
-# and run our deployment script
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      # Add a debugging step to print the secrets' lengths
-      - name: Debug SSH secrets
-        run: |
-          echo "Host: ${{ secrets.HOST }}"
-          echo "User: ${{ secrets.USERNAME }}"
-          echo "Key length: ${#${{ secrets.SSH_PRIVATE_KEY }}}"
-          # Note: do not print the actual key for security reasons
-
-      - name: Deploy to Server
-        uses: appleboy/ssh-action@master
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          port: ${{ secrets.PORT }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: "cd ~/pg_solar_api && ./.scripts/deploy.sh"
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Run deployment script
+        run: |
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ~/pg_solar_api && git pull origin master && ./.deploy_script.sh"
