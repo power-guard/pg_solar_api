@@ -15,12 +15,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      # Add a debugging step to print the secrets' lengths
+      - name: Debug SSH secrets
+        run: |
+          echo "Host: ${{ secrets.HOST }}"
+          echo "User: ${{ secrets.USERNAME }}"
+          echo "Key length: ${#secrets.SSHKEY}}"
+          # Note: do not print the actual key for security reasons
+
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
-          echo "Host: ${{ secrets.HOST }}"
-          echo "User: ${{ secrets.USERNAME }}"
-          echo "Key length: ${#secrets.SSHKEY}"
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
