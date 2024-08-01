@@ -18,6 +18,9 @@ jobs:
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
+          echo "Host: ${{ secrets.HOST }}"
+          echo "User: ${{ secrets.USERNAME }}"
+          echo "Key length: ${#secrets.SSHKEY}"
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
