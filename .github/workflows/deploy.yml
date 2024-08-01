@@ -8,18 +8,27 @@ on:
   pull_request:
     branches: ["master"]
 
-# Authenticate to the the server via ssh
+# Authenticate to the server via SSH
 # and run our deployment script
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      # Add a debugging step to print the secrets' lengths
+      - name: Debug SSH secrets
+        run: |
+          echo "Host: ${{ secrets.HOST }}"
+          echo "User: ${{ secrets.USERNAME }}"
+          echo "Key length: ${#${{ secrets.SSH_PRIVATE_KEY }}}"
+          # Note: do not print the actual key for security reasons
+
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
-          key: ${{ secrets.SSHKEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: "cd ~/pg_solar_api && ./.scripts/deploy.sh"
