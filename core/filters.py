@@ -5,7 +5,7 @@ from datetime import timedelta
 
 class LoggerPowerGenFilter(django_filters.FilterSet):
     year_month = django_filters.CharFilter(method='filter_by_year_month')
-    logger_name = django_filters.CharFilter(method='filter_by_logger_name')
+    logger_name = django_filters.CharFilter(method='filter_by_logger_names')
 
     class Meta:
         model = LoggerPowerGen
@@ -28,10 +28,9 @@ class LoggerPowerGenFilter(django_filters.FilterSet):
         except ValueError:
             return queryset.none()
 
-    def filter_by_logger_name(self, queryset, name, value):
-        # Filter LoggerCategory by logger_name and get its ID
-        try:
-            category = LoggerCategory.objects.get(logger_name=value)
-            return queryset.filter(logger_name=category)
-        except LoggerCategory.DoesNotExist:
-            return queryset.none()
+    def filter_by_logger_names(self, queryset, name, value):
+        # Split the comma-separated list of logger names
+        names = value.split(',')
+        # Filter LoggerCategory by the provided logger names
+        categories = LoggerCategory.objects.filter(logger_name__in=names)
+        return queryset.filter(logger_name__in=categories)
