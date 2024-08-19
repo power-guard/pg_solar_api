@@ -107,6 +107,8 @@ class CurtailmentEventViewSet(mixins.ListModelMixin,
 
 class LoggerPowerGenViewSet(mixins.ListModelMixin,
                             mixins.CreateModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.RetrieveModelMixin,
                             viewsets.GenericViewSet):
     queryset = models.LoggerPowerGen.objects.all()
     serializer_class = serializers.LoggerPowerGenSerializer

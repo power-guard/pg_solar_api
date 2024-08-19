@@ -96,14 +96,6 @@ class LoggerPowerGenSerializer(serializers.ModelSerializer):
         return models.LoggerPowerGen.objects.create(**validated_data)
 
 
-# class DeviceSerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = models.Device
-#         fields = ['id', 'device_id', 'device_name', 'logger_name']
-#         read_only_fiels = ['id']
-
-
 
 class PlantMonthlyRevenueSerializer(serializers.ModelSerializer):
     class Meta:
@@ -125,7 +117,3 @@ class CurtailmentEventSerializer(serializers.ModelSerializer):
         model = models.CurtailmentEvent
         fields = '__all__'
 
-# class DevicePowerGenSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = models.DevicePowerGen
-#         fields = '__all__'
