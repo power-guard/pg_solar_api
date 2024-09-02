@@ -16,14 +16,11 @@ class LoggerPowerGenFilter(django_filters.FilterSet):
         try:
             year, month = map(int, value.split('-'))
             start_date = f'{year}-{month:02d}-01'
-            end_date = f'{year}-{month:02d}-31'
-
             start_date = parse_date(start_date)
-            end_date = parse_date(end_date)
 
-            # Adjust end date to the last day of the month if necessary
-            if end_date.month != month:
-                end_date = end_date.replace(day=1) + timedelta(days=-1)
+            # Calculate the last day of the month
+            next_month = start_date.replace(day=28) + timedelta(days=4)
+            end_date = next_month - timedelta(days=next_month.day)
 
             return queryset.filter(date__range=[start_date, end_date])
         except ValueError:
