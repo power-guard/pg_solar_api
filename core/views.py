@@ -8,52 +8,11 @@ from . import serializers
 from .filters import LoggerPowerGenFilter
 
 
-class CompanyViewSet(mixins.ListModelMixin,
-                     mixins.CreateModelMixin,
-                     viewsets.GenericViewSet):
-    """View for managing Company API"""
-    serializer_class = serializers.CompanySerializer
-    queryset = models.Company.objects.all()
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
 
-class UtilitiesListViewSet(mixins.ListModelMixin,
-                     mixins.CreateModelMixin,
-                     viewsets.GenericViewSet):
-    """View for managing UtilitiesList API"""
-    serializer_class = serializers.UtilitiesListSerializer
-    queryset = models.UtilitiesList.objects.all()
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-
-class UtilitiesCredentialViewSet(mixins.ListModelMixin,
-                     mixins.CreateModelMixin,
-                     viewsets.GenericViewSet):
-    """View for managing UtilitiesCredential API"""
-    serializer_class = serializers.UtilitiesCredentialSerializer
-    queryset = models.UtilitiesCredential.objects.all()
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def perform_create(self, serializer):
-        """Create a new utilities credential."""
-        utilities_list, created = models.UtilitiesList.objects.get_or_create(
-            name=serializer.validated_data['utility_name']
-        )
-        serializer.save(utility_name=utilities_list)
-
-
-class PowerPlantViewSet(mixins.ListModelMixin,
-                     mixins.CreateModelMixin,
-                     viewsets.GenericViewSet):
-    """View for managing PowerPlant API"""
-    serializer_class = serializers.PowerPlantSerializer
-    queryset = models.PowerPlant.objects.all()
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
+"""
+View set for Plan power generation and the envent.
+"""
 
 class LoggerCategoryViewSet(mixins.ListModelMixin,
                      mixins.CreateModelMixin,
@@ -64,35 +23,6 @@ class LoggerCategoryViewSet(mixins.ListModelMixin,
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-
-class PlantMonthlyRevenueViewSet(mixins.ListModelMixin,
-                     mixins.CreateModelMixin,
-                     viewsets.GenericViewSet):
-    
-    queryset = models.PlantMonthlyRevenue.objects.all()
-    serializer_class = serializers.PlantMonthlyRevenueSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-
-class PlantMonthlyExpenseViewSet(mixins.ListModelMixin,
-                     mixins.CreateModelMixin,
-                     viewsets.GenericViewSet):
-    
-    queryset = models.PlantMonthlyExpense.objects.all()
-    serializer_class = serializers.PlantMonthlyExpenseSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-
-class PlantDailyProductionViewSet(mixins.ListModelMixin,
-                     mixins.CreateModelMixin,
-                     viewsets.GenericViewSet):
-    
-    queryset = models.PlantDailyProduction.objects.all()
-    serializer_class = serializers.PlantDailyProductionSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
 
 class CurtailmentEventViewSet(mixins.ListModelMixin,
@@ -116,3 +46,37 @@ class LoggerPowerGenViewSet(mixins.ListModelMixin,
     permission_classes = [IsAuthenticated]
     filter_backends = (DjangoFilterBackend,)
     filterset_class = LoggerPowerGenFilter
+
+
+"""
+View set for Utilitie
+"""
+
+class UtilitieMonthlyRevenueViewSet(mixins.ListModelMixin,
+                     mixins.CreateModelMixin,
+                     viewsets.GenericViewSet):
+    
+    queryset = models.UtilitieMonthlyRevenue.objects.all()
+    serializer_class = serializers.UtilitieMonthlyRevenueSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+
+class UtilitieMonthlyExpenseViewSet(mixins.ListModelMixin,
+                     mixins.CreateModelMixin,
+                     viewsets.GenericViewSet):
+    
+    queryset = models.UtilitieMonthlyExpense.objects.all()
+    serializer_class = serializers.UtilitieMonthlyExpenseSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+
+class UtilitieDailyProductionViewSet(mixins.ListModelMixin,
+                     mixins.CreateModelMixin,
+                     viewsets.GenericViewSet):
+    
+    queryset = models.UtilitieDailyProduction.objects.all()
+    serializer_class = serializers.UtilitieDailyProductionSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]

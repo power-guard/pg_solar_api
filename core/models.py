@@ -5,51 +5,45 @@ from django.db import models
 from datetime import date
 
 
-class Company(models.Model):
-    name = models.CharField(max_length=100)
-    address = models.CharField(max_length=255)
-    website_url = models.URLField(blank=True, null=True)
-    email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=20, unique=True)
-    note = models.TextField(blank=True, null=True)
-
-    class Meta:
-        # Define unique constraint
-        unique_together = [('name', 'email', 'phone_number')]
-
-    def __str__(self):
-        return self.name
+"""
+Power plan details 
+"""
 
 
-class PowerPlant(models.Model):
+class PowerPlantDetail(models.Model):
     RESOURCE_CHOICES = [
         ('Solar', 'Solar'),
         ('Wind', 'Wind'),
     ]
-    STATUS_CHOICES = [
-        ('active', 'Active'),
-        ('deactivated', 'Deactivated'),
-    ]
     
-    plant_id = models.CharField(max_length=50)
-    plant_name = models.CharField(max_length=100)
+    system_name = models.CharField(max_length=50)
+    system_id = models.CharField(max_length=50)
+    customer_name = models.CharField(max_length=100)
     resource = models.CharField(max_length=100, choices=RESOURCE_CHOICES, default='Solar')
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='active')
-    capacity_dc = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    country_name = models.CharField(max_length=100)
+    latitude = models.DecimalField(max_digits=15, decimal_places=12)
+    longitude = models.DecimalField(max_digits=15, decimal_places=12)
+    altitude = models.DecimalField(max_digits=10, decimal_places=4)
+    azimuth = models.DecimalField(max_digits=10, decimal_places=4)
+    tilt = models.DecimalField(max_digits=10, decimal_places=4)
+    capacity_dc = models.DecimalField(max_digits=10, decimal_places=2)
     capacity_ac = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     location = models.CharField(max_length=255, blank=True, null=True)
     image = models.ImageField(upload_to='plant_images/', blank=True, null=True)
-    latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
-    utilities = models.ForeignKey('UtilitiesList', blank=True, null=True, on_delete=models.SET_NULL)
-    companies = models.ManyToManyField('Company', blank=True)
-
+    
+    
     class Meta:
         # Define unique constraint based on plant_id, plant_name.
-        unique_together = [('plant_id', 'plant_name')]
+        unique_together = [('system_name', 'system_id')]
 
     def __str__(self):
-        return self.plant_name
+        return self.system_name
+
+
+
+"""
+Solar power plan detsils
+"""
 
 
 class LoggerCategory(models.Model):
@@ -80,29 +74,12 @@ class CurtailmentEvent(models.Model):
         return f"Curtailment Event for {self.plant.plant_name} on {self.date}"
 
 
+
+
 """
 Utility data Model are created below this
 """
-
-class UtilitiesList(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-    def __str__(self):
-        return f"{self.name}"
-
-
-class UtilitiesCredential(models.Model):
-    utility_name = models.ForeignKey(UtilitiesList, on_delete=models.CASCADE)
-    website_link = models.URLField()
-    website_id = models.CharField(max_length=100)
-    website_pwd = models.CharField(max_length=100)
-
-    class Meta:
-        # Define unique constraint
-        unique_together = [('utility_name', 'website_link', 'website_id')]
-
-
-class PlantMonthlyRevenue(models.Model):
+class UtilitieMonthlyRevenue(models.Model):
     plant_id = models.CharField(max_length=50)
     contract_id = models.CharField(max_length=50, blank=True, null=True)
     amount_kwh = models.DecimalField(max_digits=10, decimal_places=2,
@@ -121,7 +98,7 @@ class PlantMonthlyRevenue(models.Model):
         unique_together = [('plant_id', 'period_year', 'period_month')]
 
 
-class PlantMonthlyExpense(models.Model):
+class UtilitieMonthlyExpense(models.Model):
     plant_id = models.CharField(max_length=50)
     contract_id = models.CharField(max_length=50, blank=True, null=True)
     amount_kwh = models.DecimalField(max_digits=10, decimal_places=2,
@@ -142,7 +119,7 @@ class PlantMonthlyExpense(models.Model):
         unique_together = [('plant_id', 'period_year', 'period_month')]
 
 
-class PlantDailyProduction(models.Model):
+class UtilitieDailyProduction(models.Model):
     plant_id = models.CharField(max_length=50)
     amount_kwh = models.DecimalField(max_digits=10, decimal_places=2,
                                      blank=True, null=True)
