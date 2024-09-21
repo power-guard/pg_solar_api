@@ -5,6 +5,11 @@ from . import views
 router = DefaultRouter()
 
 """
+Power Plant Detail ViewSet URL
+"""
+router.register(r'power-plant-detail', views.PowerPlantDetailViewSet)
+
+"""
 Solare power generation URL
 """
 router.register(r'logger-power-gen', views.LoggerPowerGenViewSet)

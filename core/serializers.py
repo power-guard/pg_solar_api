@@ -6,6 +6,17 @@ from rest_framework import serializers
 from . import models
 
 
+
+"""
+serializers for PowerPlantDetail
+"""
+class PowerPlantDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.PowerPlantDetail
+        fields = '__all__'
+
+
+
 """
 serializers for solar power plan
 """

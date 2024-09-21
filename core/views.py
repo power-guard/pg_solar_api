@@ -9,6 +9,20 @@ from .filters import LoggerPowerGenFilter
 
 
 
+"""
+View set for Plan power detais.
+"""
+
+class PowerPlantDetailViewSet(mixins.ListModelMixin,
+                     mixins.CreateModelMixin,
+                     viewsets.GenericViewSet):
+    """View for managing LoggerCategory API"""
+    serializer_class = serializers.PowerPlantDetailSerializer
+    queryset = models.PowerPlantDetail.objects.all()
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+
 
 """
 View set for Plan power generation and the envent.
