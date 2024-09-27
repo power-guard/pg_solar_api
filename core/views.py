@@ -14,13 +14,17 @@ View set for Plan power detais.
 """
 
 class PowerPlantDetailViewSet(mixins.ListModelMixin,
-                     mixins.CreateModelMixin,
-                     viewsets.GenericViewSet):
-    """View for managing LoggerCategory API"""
+                              mixins.CreateModelMixin,
+                              viewsets.GenericViewSet):
+    """View for managing PowerPlantDetail API"""
     serializer_class = serializers.PowerPlantDetailSerializer
     queryset = models.PowerPlantDetail.objects.all()
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        # Automatically set the user to the authenticated user
+        serializer.save(user=self.request.user)
 
 
 
@@ -37,6 +41,10 @@ class LoggerCategoryViewSet(mixins.ListModelMixin,
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
+    def perform_create(self, serializer):
+        # Automatically set the user to the authenticated user
+        serializer.save(user=self.request.user)
+
 
 
 class CurtailmentEventViewSet(mixins.ListModelMixin,
@@ -47,6 +55,10 @@ class CurtailmentEventViewSet(mixins.ListModelMixin,
     serializer_class = serializers.CurtailmentEventSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        # Automatically set the user to the authenticated user
+        serializer.save(user=self.request.user)
 
 
 class LoggerPowerGenViewSet(mixins.ListModelMixin,
@@ -60,6 +72,10 @@ class LoggerPowerGenViewSet(mixins.ListModelMixin,
     permission_classes = [IsAuthenticated]
     filter_backends = (DjangoFilterBackend,)
     filterset_class = LoggerPowerGenFilter
+
+    def perform_create(self, serializer):
+        # Automatically set the user to the authenticated user
+        serializer.save(user=self.request.user)
 
 
 """
@@ -75,6 +91,10 @@ class UtilitieMonthlyRevenueViewSet(mixins.ListModelMixin,
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
+    def perform_create(self, serializer):
+        # Automatically set the user to the authenticated user
+        serializer.save(user=self.request.user)
+
 
 class UtilitieMonthlyExpenseViewSet(mixins.ListModelMixin,
                      mixins.CreateModelMixin,
@@ -85,6 +105,10 @@ class UtilitieMonthlyExpenseViewSet(mixins.ListModelMixin,
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
+    def perform_create(self, serializer):
+        # Automatically set the user to the authenticated user
+        serializer.save(user=self.request.user)
+
 
 class UtilitieDailyProductionViewSet(mixins.ListModelMixin,
                      mixins.CreateModelMixin,
@@ -94,3 +118,7 @@ class UtilitieDailyProductionViewSet(mixins.ListModelMixin,
     serializer_class = serializers.UtilitieDailyProductionSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        # Automatically set the user to the authenticated user
+        serializer.save(user=self.request.user)

@@ -4,6 +4,8 @@ Creating the model to store the solar data.
 from django.db import models
 from datetime import date
 
+from django.conf import settings
+
 
 """
 Power plan details 
@@ -30,6 +32,11 @@ class PowerPlantDetail(models.Model):
     capacity_ac = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     location = models.CharField(max_length=255, blank=True, null=True)
     image = models.ImageField(upload_to='plant_images/', blank=True, null=True)
+
+    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
+
     
     
     class Meta:
@@ -49,6 +56,11 @@ Solar power plan detsils
 class LoggerCategory(models.Model):
     logger_name = models.CharField(max_length=100, unique=True)
 
+    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
+
+
     def __str__(self):
         return self.logger_name
 
@@ -58,7 +70,11 @@ class LoggerPowerGen(models.Model):
     logger_name = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
     power_gen = models.DecimalField(max_digits=10, decimal_places=4)
     date = models.DateField(null=True, blank=True, default=date.today)
+    
+    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
+
     
     class Meta:
         unique_together = [('logger_name', 'date')]
@@ -69,6 +85,11 @@ class CurtailmentEvent(models.Model):
     date = models.DateField()
     start_time = models.TimeField()
     end_time = models.TimeField()
+
+    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
+
 
     def __str__(self):
         return f"Curtailment Event for {self.plant.plant_name} on {self.date}"
@@ -92,6 +113,10 @@ class UtilitieMonthlyRevenue(models.Model):
     period_month = models.IntegerField(blank=True, null=True)
     rd = models.CharField(max_length=100, blank=True, null=True)
     memo = models.TextField(blank=True, null=True)
+    
+    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
 
     class Meta:
         # Define unique constraint based on plant_id, period_year, and period_month
@@ -114,6 +139,11 @@ class UtilitieMonthlyExpense(models.Model):
     rd = models.CharField(max_length=100, blank=True, null=True)
     memo = models.TextField(blank=True, null=True)
 
+    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
+
+
     class Meta:
         # Define unique constraint based on plant_id, period_year, and period_month
         unique_together = [('plant_id', 'period_year', 'period_month')]
@@ -128,6 +158,11 @@ class UtilitieDailyProduction(models.Model):
     period_month = models.IntegerField(blank=True, null=True)
     rd = models.CharField(max_length=100, blank=True, null=True)
     memo = models.TextField(blank=True, null=True)
+
+    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
+
 
     class Meta:
         # Define unique constraint based on plant_id, period_year, and period_month

@@ -14,6 +14,7 @@ class PowerPlantDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.PowerPlantDetail
         fields = '__all__'
+        read_only_fields = ['user']
 
 
 
@@ -25,7 +26,7 @@ class LoggerCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.LoggerCategory
         fields = ['id', 'logger_name']
-        read_only_fiels = ['id']
+        read_only_fiels = ['id','user']
 
 
 class LoggerPowerGenSerializer(serializers.ModelSerializer):
@@ -34,7 +35,7 @@ class LoggerPowerGenSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.LoggerPowerGen
         fields = ['id', 'logger_name', 'power_gen', 'date', 'created_at']
-        read_only_fields = ['id']
+        read_only_fields = ['id','user']
 
     def create(self, validated_data):
         logger_name_data = validated_data.pop('logger_name')
@@ -47,6 +48,7 @@ class CurtailmentEventSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.CurtailmentEvent
         fields = '__all__'
+        read_only_fields = ['user']
 
 
 
@@ -58,16 +60,19 @@ class UtilitieMonthlyRevenueSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UtilitieMonthlyRevenue
         fields = '__all__'
+        read_only_fields = ['user']
 
 class UtilitieMonthlyExpenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UtilitieMonthlyExpense
         fields = '__all__'
+        read_only_fields = ['user']
 
 class UtilitieDailyProductionSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UtilitieDailyProduction
         fields = '__all__'
+        read_only_fields = ['user']
 
 
 
