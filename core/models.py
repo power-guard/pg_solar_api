@@ -70,8 +70,9 @@ class LoggerPowerGen(models.Model):
     logger_name = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
     power_gen = models.DecimalField(max_digits=10, decimal_places=4)
     date = models.DateField(null=True, blank=True, default=date.today)
-    
-    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+    status = models.BooleanField(default=True) 
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
 
@@ -86,6 +87,7 @@ class CurtailmentEvent(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
 
+    status = models.BooleanField(default=True)
     updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
@@ -113,7 +115,8 @@ class UtilitieMonthlyRevenue(models.Model):
     period_month = models.IntegerField(blank=True, null=True)
     rd = models.CharField(max_length=100, blank=True, null=True)
     memo = models.TextField(blank=True, null=True)
-    
+
+    status = models.BooleanField(default=True) 
     updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
@@ -139,6 +142,7 @@ class UtilitieMonthlyExpense(models.Model):
     rd = models.CharField(max_length=100, blank=True, null=True)
     memo = models.TextField(blank=True, null=True)
 
+    status = models.BooleanField(default=True)
     updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
@@ -159,6 +163,7 @@ class UtilitieDailyProduction(models.Model):
     rd = models.CharField(max_length=100, blank=True, null=True)
     memo = models.TextField(blank=True, null=True)
 
+    status = models.BooleanField(default=True)
     updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)

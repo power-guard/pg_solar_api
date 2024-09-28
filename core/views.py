@@ -74,9 +74,12 @@ class LoggerPowerGenViewSet(mixins.ListModelMixin,
     filterset_class = LoggerPowerGenFilter
 
     def perform_create(self, serializer):
-        # Automatically set the user to the authenticated user
+        # Automatically set the user to the authenticated user during creation
         serializer.save(user=self.request.user)
 
+    def perform_update(self, serializer):
+        # Automatically update the user and updated_at during the update
+        serializer.save(user=self.request.user)
 
 """
 View set for Utilitie
