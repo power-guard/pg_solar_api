@@ -26,7 +26,7 @@ class LoggerPowerGenAdmin(admin.ModelAdmin):
 
 @admin.register(models.CurtailmentEvent)
 class CurtailmentEventAdmin(admin.ModelAdmin):
-    list_display = ('plant', 'date', 'start_time', 'end_time','status',  'created_at', 'updated_at','user')
+    list_display = ('plant_id', 'date', 'start_time', 'end_time','status',  'created_at', 'updated_at','user')
 
 
 """
@@ -34,19 +34,20 @@ Admin view for Utilitie detais
 """
 
 @admin.register(models.UtilitieMonthlyRevenue)
-class PlantMonthlyRevenueAdmin(admin.ModelAdmin):
-    list_display = ('plant_id', 'contract_id', 'amount_kwh',
-                    'amount_jpy', 'tax_jpy', 'period_year',
-                    'period_month', 'rd','status',  'created_at', 'updated_at','user')
+class UtilitieMonthlyRevenueAdmin(admin.ModelAdmin):
+    list_display = ('plant_id', 'contract_id', 'start_date',
+                    'end_date', 'power_capacity_kw', 'sales_days',
+                    'sales_electricity_kwh', 'sales_amount_jpy','tax_jpy',  'average_daily_sales_kwh', 
+                    'rd','status','updated_at','created_at',  'user')
 
 @admin.register(models.UtilitieMonthlyExpense)
-class PlantMonthlyExpenseAdmin(admin.ModelAdmin):
-    list_display = ('plant_id', 'contract_id', 'amount_kwh',
-                    'amount_jpy', 'tax_jpy', 'period_year',
-                    'period_month', 'rd','status',  'created_at', 'updated_at','user')
+class UtilitieMonthlyExpenseeAdmin(admin.ModelAdmin):
+    list_display = ('plant_id', 'contract_id', 'used_electricity_kwh',
+                    'used_amount_jpy', 'tax_jpy', 'used_dates',
+                    'rd','status',  'created_at', 'updated_at','user')
 
 @admin.register(models.UtilitieDailyProduction)
-class PlantMonthlyExpensesAdmin(admin.ModelAdmin):
-    list_display = ('plant_id', 'amount_kwh', 'prod_date',
-                    'period_year', 'period_month', 'rd','status',  'created_at', 'updated_at','user')
+class UtilitieDailyProductionAdmin(admin.ModelAdmin):
+    list_display = ('plant_id', 'sales_electricity_kwh', 'sales_date',
+                    'rd','status',  'created_at', 'updated_at','user')
 

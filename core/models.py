@@ -82,7 +82,7 @@ class LoggerPowerGen(models.Model):
 
 
 class CurtailmentEvent(models.Model):
-    plant = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
+    plant_id = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
     date = models.DateField()
     start_time = models.TimeField()
     end_time = models.TimeField()
@@ -94,7 +94,7 @@ class CurtailmentEvent(models.Model):
 
 
     def __str__(self):
-        return f"Curtailment Event for {self.plant.plant_name} on {self.date}"
+        return f"Curtailment Event for {self.plant_id.plant_name} on {self.date}"
 
 
 
@@ -105,16 +105,21 @@ Utility data Model are created below this
 class UtilitieMonthlyRevenue(models.Model):
     plant_id = models.CharField(max_length=50)
     contract_id = models.CharField(max_length=50, blank=True, null=True)
-    amount_kwh = models.DecimalField(max_digits=10, decimal_places=2,
+    start_date = models.IntegerField(blank=True, null=True)
+    end_date = models.IntegerField(blank=True, null=True)
+    power_capacity_kw = models.DecimalField(max_digits=10, decimal_places=2,
                                      blank=True, null=True)
-    amount_jpy = models.DecimalField(max_digits=10, decimal_places=2,
+    sales_days = models.IntegerField(blank=True, null=True)
+    sales_electricity_kwh = models.DecimalField(max_digits=10, decimal_places=2,
+                                     blank=True, null=True)
+    sales_amount_jpy = models.DecimalField(max_digits=10, decimal_places=2,
                                      blank=True, null=True)
     tax_jpy = models.DecimalField(max_digits=10, decimal_places=2,
                                   blank=True, null=True)
-    period_year = models.IntegerField(blank=True, null=True)
-    period_month = models.IntegerField(blank=True, null=True)
+    average_daily_sales_kwh = models.DecimalField(max_digits=10, decimal_places=2,
+                                  blank=True, null=True)
+    
     rd = models.CharField(max_length=100, blank=True, null=True)
-    memo = models.TextField(blank=True, null=True)
 
     status = models.BooleanField(default=True) 
     updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
@@ -123,24 +128,20 @@ class UtilitieMonthlyRevenue(models.Model):
 
     class Meta:
         # Define unique constraint based on plant_id, period_year, and period_month
-        unique_together = [('plant_id', 'period_year', 'period_month')]
+        unique_together = [('plant_id', 'contract_id', 'rd')]
 
 
 class UtilitieMonthlyExpense(models.Model):
     plant_id = models.CharField(max_length=50)
     contract_id = models.CharField(max_length=50, blank=True, null=True)
-    amount_kwh = models.DecimalField(max_digits=10, decimal_places=2,
+    used_electricity_kwh = models.DecimalField(max_digits=10, decimal_places=2,
                                      blank=True, null=True)
-    amount_jpy = models.DecimalField(max_digits=10, decimal_places=2,
+    used_amount_jpy = models.DecimalField(max_digits=10, decimal_places=2,
                                      blank=True, null=True)
     tax_jpy = models.DecimalField(max_digits=10, decimal_places=2,
                                   blank=True, null=True)
-    period_year = models.IntegerField(blank=True, null=True)
-    period_month = models.IntegerField(blank=True, null=True)
-    start_date = models.CharField(max_length=50, blank=True, null=True)
-    end_date = models.CharField(max_length=50, blank=True, null=True)
+    used_dates = models.CharField(max_length=50, blank=True, null=True)
     rd = models.CharField(max_length=100, blank=True, null=True)
-    memo = models.TextField(blank=True, null=True)
 
     status = models.BooleanField(default=True)
     updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
@@ -150,18 +151,15 @@ class UtilitieMonthlyExpense(models.Model):
 
     class Meta:
         # Define unique constraint based on plant_id, period_year, and period_month
-        unique_together = [('plant_id', 'period_year', 'period_month')]
+        unique_together = [('plant_id', 'contract_id', 'rd')]
 
 
 class UtilitieDailyProduction(models.Model):
     plant_id = models.CharField(max_length=50)
-    amount_kwh = models.DecimalField(max_digits=10, decimal_places=2,
+    sales_electricity_kwh = models.DecimalField(max_digits=10, decimal_places=2,
                                      blank=True, null=True)
-    prod_date = models.CharField(max_length=50, blank=True, null=True)
-    period_year = models.IntegerField(blank=True, null=True)
-    period_month = models.IntegerField(blank=True, null=True)
+    sales_date = models.CharField(max_length=50, blank=True, null=True)
     rd = models.CharField(max_length=100, blank=True, null=True)
-    memo = models.TextField(blank=True, null=True)
 
     status = models.BooleanField(default=True)
     updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
@@ -171,7 +169,7 @@ class UtilitieDailyProduction(models.Model):
 
     class Meta:
         # Define unique constraint based on plant_id, period_year, and period_month
-        unique_together = [('plant_id', 'prod_date')]
+        unique_together = [('plant_id', 'rd')]
 
 
 

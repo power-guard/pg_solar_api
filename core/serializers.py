@@ -46,9 +46,12 @@ class LoggerPowerGenSerializer(serializers.ModelSerializer):
 
 
 class CurtailmentEventSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()
+
     class Meta:
         model = models.CurtailmentEvent
         fields = '__all__'
+        read_only_fields = ['id']
 
 
 
@@ -57,9 +60,12 @@ serializers for Utilitie
 """
 
 class UtilitieMonthlyRevenueSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()
+    
     class Meta:
         model = models.UtilitieMonthlyRevenue
         fields = '__all__'
+        read_only_fields = ['id']
 
 class UtilitieMonthlyExpenseSerializer(serializers.ModelSerializer):
     class Meta:
