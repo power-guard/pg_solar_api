@@ -95,6 +95,7 @@ class UtilitieMonthlyRevenueViewSet(mixins.ListModelMixin,
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
+        
         # Automatically set the user to the authenticated user
         serializer.save(user=self.request.user)
 

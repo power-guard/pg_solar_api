@@ -42,12 +42,12 @@ class UtilitieMonthlyRevenueAdmin(admin.ModelAdmin):
 
 @admin.register(models.UtilitieMonthlyExpense)
 class UtilitieMonthlyExpenseeAdmin(admin.ModelAdmin):
-    list_display = ('plant_id', 'contract_id', 'used_electricity_kwh',
-                    'used_amount_jpy', 'tax_jpy', 'used_dates',
+    list_display = ('plant_id',  'used_electricity_kwh',
+                    'used_amount_jpy', 'tax_jpy',
                     'rd','status',  'created_at', 'updated_at','user')
 
 @admin.register(models.UtilitieDailyProduction)
 class UtilitieDailyProductionAdmin(admin.ModelAdmin):
-    list_display = ('plant_id', 'sales_electricity_kwh', 'sales_date',
+    list_display = ('plant_id', 'power_production_kwh', 'production_date',
                     'rd','status',  'created_at', 'updated_at','user')
 

@@ -105,8 +105,8 @@ Utility data Model are created below this
 class UtilitieMonthlyRevenue(models.Model):
     plant_id = models.CharField(max_length=50)
     contract_id = models.CharField(max_length=50, blank=True, null=True)
-    start_date = models.IntegerField(blank=True, null=True)
-    end_date = models.IntegerField(blank=True, null=True)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
     power_capacity_kw = models.DecimalField(max_digits=10, decimal_places=2,
                                      blank=True, null=True)
     sales_days = models.IntegerField(blank=True, null=True)
@@ -119,7 +119,8 @@ class UtilitieMonthlyRevenue(models.Model):
     average_daily_sales_kwh = models.DecimalField(max_digits=10, decimal_places=2,
                                   blank=True, null=True)
     
-    rd = models.CharField(max_length=100, blank=True, null=True)
+    # Store year and month as a string in 'YYYY-MM' format
+    rd = models.CharField(max_length=7, blank=True, null=True)
 
     status = models.BooleanField(default=True) 
     updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
@@ -133,33 +134,14 @@ class UtilitieMonthlyRevenue(models.Model):
 
 class UtilitieMonthlyExpense(models.Model):
     plant_id = models.CharField(max_length=50)
-    contract_id = models.CharField(max_length=50, blank=True, null=True)
     used_electricity_kwh = models.DecimalField(max_digits=10, decimal_places=2,
                                      blank=True, null=True)
     used_amount_jpy = models.DecimalField(max_digits=10, decimal_places=2,
                                      blank=True, null=True)
     tax_jpy = models.DecimalField(max_digits=10, decimal_places=2,
                                   blank=True, null=True)
-    used_dates = models.CharField(max_length=50, blank=True, null=True)
-    rd = models.CharField(max_length=100, blank=True, null=True)
-
-    status = models.BooleanField(default=True)
-    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
-
-
-    class Meta:
-        # Define unique constraint based on plant_id, period_year, and period_month
-        unique_together = [('plant_id', 'contract_id', 'rd')]
-
-
-class UtilitieDailyProduction(models.Model):
-    plant_id = models.CharField(max_length=50)
-    sales_electricity_kwh = models.DecimalField(max_digits=10, decimal_places=2,
-                                     blank=True, null=True)
-    sales_date = models.CharField(max_length=50, blank=True, null=True)
-    rd = models.CharField(max_length=100, blank=True, null=True)
+    # Store year and month as a string in 'YYYY-MM' format
+    rd = models.CharField(max_length=7, blank=True, null=True)
 
     status = models.BooleanField(default=True)
     updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
@@ -170,6 +152,25 @@ class UtilitieDailyProduction(models.Model):
     class Meta:
         # Define unique constraint based on plant_id, period_year, and period_month
         unique_together = [('plant_id', 'rd')]
+
+
+class UtilitieDailyProduction(models.Model):
+    plant_id = models.CharField(max_length=50)
+    power_production_kwh = models.DecimalField(max_digits=10, decimal_places=2,
+                                     blank=True, null=True)
+    production_date = models.DateField(null=True, blank=True)
+    # Store year and month as a string in 'YYYY-MM' format
+    rd = models.CharField(max_length=7, blank=True, null=True)
+
+    status = models.BooleanField(default=True)
+    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
+
+
+    class Meta:
+        # Define unique constraint based on plant_id, period_year, and period_month
+        unique_together = [('plant_id', 'production_date')]
 
 
 
