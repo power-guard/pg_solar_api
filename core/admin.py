@@ -32,22 +32,26 @@ class CurtailmentEventAdmin(admin.ModelAdmin):
 """
 Admin view for Utilitie detais
 """
+@admin.register(models.UtlityPlantId)
+class UtlityPlantIdAdmin(admin.ModelAdmin):
+    list_display = ('plant_id', 'created_at', 'updated_at','user')
 
-@admin.register(models.UtilitieMonthlyRevenue)
-class UtilitieMonthlyRevenueAdmin(admin.ModelAdmin):
+
+@admin.register(models.UtilityMonthlyRevenue)
+class UtilityMonthlyRevenueAdmin(admin.ModelAdmin):
     list_display = ('plant_id', 'contract_id', 'start_date',
                     'end_date', 'power_capacity_kw', 'sales_days',
                     'sales_electricity_kwh', 'sales_amount_jpy','tax_jpy',  'average_daily_sales_kwh', 
                     'rd','status','updated_at','created_at',  'user')
 
-@admin.register(models.UtilitieMonthlyExpense)
-class UtilitieMonthlyExpenseeAdmin(admin.ModelAdmin):
+@admin.register(models.UtilityMonthlyExpense)
+class UtilityMonthlyExpenseAdmin(admin.ModelAdmin):
     list_display = ('plant_id',  'used_electricity_kwh',
                     'used_amount_jpy', 'tax_jpy',
                     'rd','status',  'created_at', 'updated_at','user')
 
-@admin.register(models.UtilitieDailyProduction)
-class UtilitieDailyProductionAdmin(admin.ModelAdmin):
+@admin.register(models.UtilityDailyProduction)
+class UtilityDailyProductionAdmin(admin.ModelAdmin):
     list_display = ('plant_id', 'power_production_kwh', 'production_date',
                     'rd','status',  'created_at', 'updated_at','user')
 

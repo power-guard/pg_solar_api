@@ -1,41 +1,37 @@
-"""
-Serializers for solar APIs.
-"""
-
 from rest_framework import serializers
 from . import models
-
 
 
 """
 serializers for PowerPlantDetail
 """
 class PowerPlantDetailSerializer(serializers.ModelSerializer):
+    """Serializer for PowerPlantDetail."""
     class Meta:
         model = models.PowerPlantDetail
         fields = '__all__'
         read_only_fields = ['user']
 
 
-
 """
 serializers for solar power plan
 """
-
 class LoggerCategorySerializer(serializers.ModelSerializer):
+    """Serializer for LoggerCategory."""
     class Meta:
         model = models.LoggerCategory
         fields = '__all__'
-        read_only_fiels = ['id']
+        read_only_fields = ['id']
 
 
 class LoggerPowerGenSerializer(serializers.ModelSerializer):
+    """Serializer for LoggerPowerGen."""
     logger_name = serializers.CharField(source='logger_name.logger_name')  # Use the logger_name field from LoggerCategory
     user = serializers.StringRelatedField()
 
     class Meta:
         model = models.LoggerPowerGen
-        fields = ['id','logger_name', 'power_gen', 'date', 'status', 'created_at', 'updated_at', 'user']
+        fields = ['id', 'logger_name', 'power_gen', 'date', 'status', 'created_at', 'updated_at', 'user']
         read_only_fields = ['id']
 
     def create(self, validated_data):
@@ -46,6 +42,7 @@ class LoggerPowerGenSerializer(serializers.ModelSerializer):
 
 
 class CurtailmentEventSerializer(serializers.ModelSerializer):
+    """Serializer for CurtailmentEvent."""
     user = serializers.StringRelatedField()
 
     class Meta:
@@ -54,32 +51,73 @@ class CurtailmentEventSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
 
-
 """
 serializers for Utilitie
 """
+class UtilityPlantIdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.UtlityPlantId
+        fields = '__all__'
+        read_only_fields = ['id', 'created_at', 'updated_at']
 
-class UtilitieMonthlyRevenueSerializer(serializers.ModelSerializer):
+
+class UtilityMonthlyRevenueSerializer(serializers.ModelSerializer):
+    """Serializer for UtilityMonthlyRevenue."""
+    plant_id = serializers.CharField(source='plant_id.plant_id')
     user = serializers.StringRelatedField()
-    
+
     class Meta:
-        model = models.UtilitieMonthlyRevenue
-        fields = '__all__'
-        read_only_fields = ['id']
+        model = models.UtilityMonthlyRevenue
+        fields = [
+            'id', 'plant_id', 'contract_id', 'start_date', 'end_date',
+            'power_capacity_kw', 'sales_days', 'sales_electricity_kwh',
+            'sales_amount_jpy', 'tax_jpy', 'average_daily_sales_kwh', 'rd', 'status',
+            'user', 'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']
 
-class UtilitieMonthlyExpenseSerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        plant_id_data = validated_data.pop('plant_id')
+        plant_id, created = models.UtlityPlantId.objects.get_or_create(plant_id=plant_id_data['plant_id'])
+        validated_data['plant_id'] = plant_id
+        return models.UtilityMonthlyRevenue.objects.create(**validated_data)
+
+
+class UtilityMonthlyExpenseSerializer(serializers.ModelSerializer):
+    """Serializer for UtilityMonthlyExpense."""
+    plant_id = serializers.CharField(source='plant_id.plant_id')
+    user = serializers.StringRelatedField()
+
     class Meta:
-        model = models.UtilitieMonthlyExpense
-        fields = '__all__'
+        model = models.UtilityMonthlyExpense
+        fields = [
+            'id', 'plant_id', 'used_electricity_kwh', 'used_amount_jpy', 'tax_jpy',
+            'rd', 'status', 'user', 'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']
 
-class UtilitieDailyProductionSerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        plant_id_data = validated_data.pop('plant_id')
+        plant_id, created = models.UtlityPlantId.objects.get_or_create(plant_id=plant_id_data['plant_id'])
+        validated_data['plant_id'] = plant_id
+        return models.UtilityMonthlyRevenue.objects.create(**validated_data)
+
+
+class UtilityDailyProductionSerializer(serializers.ModelSerializer):
+    """Serializer for UtilityDailyProduction."""
+    plant_id = serializers.CharField(source='plant_id.plant_id')
+    user = serializers.StringRelatedField()
+
     class Meta:
-        model = models.UtilitieDailyProduction
-        fields = '__all__'
+        model = models.UtilityDailyProduction
+        fields = [
+            'id', 'plant_id', 'power_production_kwh', 'production_date',
+            'rd', 'status', 'user', 'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']
 
-
-
-
-
-
-
+    def create(self, validated_data):
+        plant_id_data = validated_data.pop('plant_id')
+        plant_id, created = models.UtlityPlantId.objects.get_or_create(plant_id=plant_id_data['plant_id'])
+        validated_data['plant_id'] = plant_id
+        return models.UtilityMonthlyRevenue.objects.create(**validated_data)

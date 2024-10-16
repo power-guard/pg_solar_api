@@ -102,8 +102,21 @@ class CurtailmentEvent(models.Model):
 """
 Utility data Model are created below this
 """
-class UtilitieMonthlyRevenue(models.Model):
-    plant_id = models.CharField(max_length=50)
+class UtlityPlantId(models.Model):
+    plant_id = models.CharField(max_length=100, unique=True)
+
+    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
+
+
+    def __str__(self):
+        return self.plant_id
+
+
+
+class UtilityMonthlyRevenue(models.Model):
+    plant_id = models.ForeignKey(UtlityPlantId, on_delete=models.CASCADE)
     contract_id = models.CharField(max_length=50, blank=True, null=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
@@ -132,8 +145,8 @@ class UtilitieMonthlyRevenue(models.Model):
         unique_together = [('plant_id', 'contract_id', 'rd')]
 
 
-class UtilitieMonthlyExpense(models.Model):
-    plant_id = models.CharField(max_length=50)
+class UtilityMonthlyExpense(models.Model):
+    plant_id = models.ForeignKey(UtlityPlantId, on_delete=models.CASCADE)
     used_electricity_kwh = models.DecimalField(max_digits=10, decimal_places=2,
                                      blank=True, null=True)
     used_amount_jpy = models.DecimalField(max_digits=10, decimal_places=2,
@@ -154,8 +167,8 @@ class UtilitieMonthlyExpense(models.Model):
         unique_together = [('plant_id', 'rd')]
 
 
-class UtilitieDailyProduction(models.Model):
-    plant_id = models.CharField(max_length=50)
+class UtilityDailyProduction(models.Model):
+    plant_id = models.ForeignKey(UtlityPlantId, on_delete=models.CASCADE)
     power_production_kwh = models.DecimalField(max_digits=10, decimal_places=2,
                                      blank=True, null=True)
     production_date = models.DateField(null=True, blank=True)
@@ -171,6 +184,3 @@ class UtilitieDailyProduction(models.Model):
     class Meta:
         # Define unique constraint based on plant_id, period_year, and period_month
         unique_together = [('plant_id', 'production_date')]
-
-
-

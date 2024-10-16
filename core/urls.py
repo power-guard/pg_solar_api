@@ -13,18 +13,18 @@ router.register(r'power-plant-detail', views.PowerPlantDetailViewSet)
 Solare power generation URL
 """
 router.register(r'logger-power-gen', views.LoggerPowerGenViewSet)
-router.register('loggercategories', views.LoggerCategoryViewSet)
+router.register(r'loggercategories', views.LoggerCategoryViewSet)
 router.register(r'curtailment-event', views.CurtailmentEventViewSet)
 
 """
-Utilitie URL
+Utlity URL
 """
-router.register(r'utilitie-monthly-revenue', views.UtilitieMonthlyRevenueViewSet)
-router.register(r'utilitie-monthly-expense', views.UtilitieMonthlyExpenseViewSet)
-router.register(r'utilitie-daily-production', views.UtilitieDailyProductionViewSet)
-
-
+router.register(r'utlity-monthly-revenue', views.UtlityMonthlyRevenueViewSet)
+router.register(r'utlity-monthly-expense', views.UtlityMonthlyExpenseViewSet)
+router.register(r'utlity-daily-production', views.UtlityDailyProductionViewSet)
+router.register(r'utlity-plants-list', views.UtlityPlantIdViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', include(router.urls)),  # Include all router URLs
+    path('csrf-token-endpoint/', views.csrf_token_view, name='csrf_token'),  # CSRF token endpoint
 ]
