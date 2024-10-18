@@ -2,29 +2,23 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
 
+# Initialize DefaultRouter
 router = DefaultRouter()
 
-"""
-Power Plant Detail ViewSet URL
-"""
-router.register(r'power-plant-detail', views.PowerPlantDetailViewSet)
+# Register ViewSets with the router
+router.register(r'power-plant-detail', views.PowerPlantDetailViewSet, basename='power-plant-detail')
+router.register(r'logger-power-gen', views.LoggerPowerGenViewSet, basename='logger-power-gen')
+router.register(r'loggercategories', views.LoggerCategoryViewSet, basename='loggercategories')
+router.register(r'curtailment-event', views.CurtailmentEventViewSet, basename='curtailment-event')
 
-"""
-Solare power generation URL
-"""
-router.register(r'logger-power-gen', views.LoggerPowerGenViewSet)
-router.register(r'loggercategories', views.LoggerCategoryViewSet)
-router.register(r'curtailment-event', views.CurtailmentEventViewSet)
+# Utility-related ViewSets
+router.register(r'utlity-monthly-revenue', views.UtlityMonthlyRevenueViewSet, basename='utlity-monthly-revenue')
+router.register(r'utlity-monthly-expense', views.UtlityMonthlyExpenseViewSet, basename='utlity-monthly-expense')
+router.register(r'utlity-daily-production', views.UtlityDailyProductionViewSet, basename='utlity-daily-production')
+router.register(r'utlity-plants-list', views.UtlityPlantIdViewSet, basename='utlity-plants-list')
 
-"""
-Utlity URL
-"""
-router.register(r'utlity-monthly-revenue', views.UtlityMonthlyRevenueViewSet)
-router.register(r'utlity-monthly-expense', views.UtlityMonthlyExpenseViewSet)
-router.register(r'utlity-daily-production', views.UtlityDailyProductionViewSet)
-router.register(r'utlity-plants-list', views.UtlityPlantIdViewSet)
-
+# Define the URL patterns
 urlpatterns = [
-    path('', include(router.urls)),  # Include all router URLs
-    path('csrf-token-endpoint/', views.csrf_token_view, name='csrf_token'),  # CSRF token endpoint
+    path('', include(router.urls)),  # Register all ViewSet URLs
+    #path('csrf-token-endpoint/', views.csrf_token_view, name='csrf_token'),  # CSRF token endpoint
 ]

@@ -100,7 +100,7 @@ class UtilityMonthlyExpenseSerializer(serializers.ModelSerializer):
         plant_id_data = validated_data.pop('plant_id')
         plant_id, created = models.UtlityPlantId.objects.get_or_create(plant_id=plant_id_data['plant_id'])
         validated_data['plant_id'] = plant_id
-        return models.UtilityMonthlyRevenue.objects.create(**validated_data)
+        return models.UtilityMonthlyExpense.objects.create(**validated_data)
 
 
 class UtilityDailyProductionSerializer(serializers.ModelSerializer):
@@ -120,4 +120,4 @@ class UtilityDailyProductionSerializer(serializers.ModelSerializer):
         plant_id_data = validated_data.pop('plant_id')
         plant_id, created = models.UtlityPlantId.objects.get_or_create(plant_id=plant_id_data['plant_id'])
         validated_data['plant_id'] = plant_id
-        return models.UtilityMonthlyRevenue.objects.create(**validated_data)
+        return models.UtilityDailyProduction.objects.create(**validated_data)

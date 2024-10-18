@@ -12,9 +12,9 @@ from .filters import LoggerPowerGenFilter
 """
 This is for CSRF toke.
 """
-from django.http import JsonResponse
-from django.views.decorators.csrf import ensure_csrf_cookie
-from django.middleware.csrf import get_token
+# from django.http import JsonResponse
+# from django.views.decorators.csrf import ensure_csrf_cookie
+# from django.middleware.csrf import get_token
 
 
 """
@@ -96,7 +96,7 @@ class UtlityDailyProductionViewSet(BaseViewSet):
 
 
 
-@ensure_csrf_cookie
-def csrf_token_view(request):
-    """Returns the CSRF token for the client."""
-    return JsonResponse({'csrfToken': get_token(request)})
+# @ensure_csrf_cookie
+# def csrf_token_view(request):
+#     """Returns the CSRF token for the client."""
+#     return JsonResponse({'csrfToken': get_token(request)})
