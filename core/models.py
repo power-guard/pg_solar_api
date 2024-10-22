@@ -49,12 +49,26 @@ class PowerPlantDetail(models.Model):
 
 
 """
+Group for the Logger and Plantid
+"""
+
+class LoggerPlantGroup(models.Model):
+    group_name = models.CharField(max_length=100, unique=True)
+
+    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
+
+    def __str__(self):
+        return self.group_name
+
+"""
 Solar power plan detsils
 """
 
-
 class LoggerCategory(models.Model):
     logger_name = models.CharField(max_length=100, unique=True)
+    group = models.ForeignKey(LoggerPlantGroup, on_delete=models.CASCADE, default=1)
 
     updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
@@ -104,7 +118,8 @@ Utility data Model are created below this
 """
 class UtlityPlantId(models.Model):
     plant_id = models.CharField(max_length=100, unique=True)
-
+    group = models.ForeignKey(LoggerPlantGroup, on_delete=models.CASCADE, default=1)
+    
     updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)

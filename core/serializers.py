@@ -14,6 +14,19 @@ class PowerPlantDetailSerializer(serializers.ModelSerializer):
 
 
 """
+serializers for logger and plant group
+"""
+class LoggerPlantGroupSerializer(serializers.ModelSerializer):
+    """Serializer for PowerPlantDetail."""
+    class Meta:
+        model = models.LoggerPlantGroup
+        fields = '__all__'
+        read_only_fields = ['user']
+
+
+
+
+"""
 serializers for solar power plan
 """
 class LoggerCategorySerializer(serializers.ModelSerializer):

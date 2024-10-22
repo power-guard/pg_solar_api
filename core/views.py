@@ -39,6 +39,12 @@ class BaseViewSet(mixins.ListModelMixin,
         serializer.save(user=self.request.user)
 
 
+class LoggerPlantGroupViewSet(BaseViewSet):
+    """View for managing LoggerPlantGroup API"""
+    serializer_class = serializers.LoggerPlantGroupSerializer
+    queryset = models.LoggerPlantGroup.objects.all()
+
+
 class PowerPlantDetailViewSet(BaseViewSet):
     """View for managing PowerPlantDetail API"""
     serializer_class = serializers.PowerPlantDetailSerializer
@@ -57,6 +63,15 @@ class LoggerPowerGenViewSet(BaseViewSet):
     serializer_class = serializers.LoggerPowerGenSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = LoggerPowerGenFilter
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        group_name = self.request.query_params.get('group_name', None)
+        if group_name:
+            # Apply custom filtering based on the group name
+            categories = models.LoggerCategory.objects.filter(group__group_name=group_name)
+            queryset = queryset.filter(logger_name__in=categories)
+        return queryset
 
 
 class CurtailmentEventViewSet(BaseViewSet):

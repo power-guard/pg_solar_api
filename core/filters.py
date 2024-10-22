@@ -7,6 +7,7 @@ class LoggerPowerGenFilter(django_filters.FilterSet):
     year_month = django_filters.CharFilter(method='filter_by_year_month')
     year_month_date = django_filters.CharFilter(method='filter_by_year_month_date')
     logger_name = django_filters.CharFilter(method='filter_by_logger_names')
+    #group_name = django_filters.CharFilter(method='filter_by_group_name')  # New filter for group name
 
     class Meta:
         model = LoggerPowerGen
@@ -55,4 +56,9 @@ class LoggerPowerGenFilter(django_filters.FilterSet):
         names = value.split(',')
         # Filter LoggerCategory by the provided logger names
         categories = LoggerCategory.objects.filter(logger_name__in=names)
+        return queryset.filter(logger_name__in=categories)
+
+    def filter_by_group_name(self, queryset, group_name):
+        # Filter LoggerCategory by the provided group name
+        categories = LoggerCategory.objects.filter(group__group_name=group_name)
         return queryset.filter(logger_name__in=categories)

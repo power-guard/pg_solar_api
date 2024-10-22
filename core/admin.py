@@ -10,6 +10,13 @@ class PowerPlantDetailAdmin(admin.ModelAdmin):
     list_display = ('system_name', 'system_id',  'country_name', 'latitude', 'longitude', 'azimuth', 'tilt', 'capacity_dc', 'created_at', 'updated_at','user')
 
 
+"""
+Group admin view
+"""
+@admin.register(models.LoggerPlantGroup)
+class LoggerPlantGroupAdmin(admin.ModelAdmin):
+    list_display = ('group_name', 'created_at', 'updated_at','user')
+
 
 """
 Admin view for solar power plan power generation
@@ -17,7 +24,7 @@ Admin view for solar power plan power generation
 
 @admin.register(models.LoggerCategory)
 class LoggerCategoryAdmin(admin.ModelAdmin):
-    list_display = ('logger_name', 'created_at', 'updated_at','user')
+    list_display = ('logger_name', 'group', 'created_at', 'updated_at','user')
 
 @admin.register(models.LoggerPowerGen)
 class LoggerPowerGenAdmin(admin.ModelAdmin):
@@ -34,7 +41,7 @@ Admin view for Utilitie detais
 """
 @admin.register(models.UtlityPlantId)
 class UtlityPlantIdAdmin(admin.ModelAdmin):
-    list_display = ('plant_id', 'created_at', 'updated_at','user')
+    list_display = ('plant_id', 'group', 'created_at', 'updated_at','user')
 
 
 @admin.register(models.UtilityMonthlyRevenue)
