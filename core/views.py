@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
 from . import models
 from . import serializers
-from .filters import LoggerPowerGenFilter
+from . import filters
 
 """
 This is for CSRF toke.
@@ -62,7 +62,7 @@ class LoggerPowerGenViewSet(BaseViewSet):
     queryset = models.LoggerPowerGen.objects.all()
     serializer_class = serializers.LoggerPowerGenSerializer
     filter_backends = (DjangoFilterBackend,)
-    filterset_class = LoggerPowerGenFilter
+    filterset_class = filters.LoggerPowerGenFilter
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -91,18 +91,48 @@ class UtlityMonthlyRevenueViewSet(BaseViewSet):
     """View for managing UtilityMonthlyRevenue API"""
     queryset = models.UtilityMonthlyRevenue.objects.all()
     serializer_class = serializers.UtilityMonthlyRevenueSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = filters.UtilityMonthlyRevenueFilter
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        group_name = self.request.query_params.get('group_name', None)
+        if group_name:
+            # Apply custom filtering based on the group name
+            queryset = queryset.filter(plant_id__group__group_name=group_name)
+        return queryset
 
 
 class UtlityMonthlyExpenseViewSet(BaseViewSet):
     """View for managing UtilitieMonthlyExpense API"""
     queryset = models.UtilityMonthlyExpense.objects.all()
     serializer_class = serializers.UtilityMonthlyExpenseSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = filters.UtilityMonthlyExpenseFilter
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        group_name = self.request.query_params.get('group_name', None)
+        if group_name:
+            # Apply custom filtering based on the group name
+            queryset = queryset.filter(plant_id__group__group_name=group_name)
+        return queryset
 
 
 class UtlityDailyProductionViewSet(BaseViewSet):
     """View for managing UtilitieDailyProduction API"""
     queryset = models.UtilityDailyProduction.objects.all()
     serializer_class = serializers.UtilityDailyProductionSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = filters.UtilityDailyProductionFilter
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        group_name = self.request.query_params.get('group_name', None)
+        if group_name:
+            # Apply custom filtering based on the group name
+            queryset = queryset.filter(plant_id__group__group_name=group_name)
+        return queryset
 
 
 
