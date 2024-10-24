@@ -81,13 +81,13 @@ class CurtailmentEventViewSet(BaseViewSet):
 
 
 
-class UtlityPlantIdViewSet(BaseViewSet):
-    """View for managing UtlityPlantId API"""
-    queryset = models.UtlityPlantId.objects.all()
+class UtilityPlantIdViewSet(BaseViewSet):
+    """View for managing UtilityPlantId API"""
+    queryset = models.UtilityPlantId.objects.all()
     serializer_class = serializers.UtilityPlantIdSerializer
 
 
-class UtlityMonthlyRevenueViewSet(BaseViewSet):
+class UtilityMonthlyRevenueViewSet(BaseViewSet):
     """View for managing UtilityMonthlyRevenue API"""
     queryset = models.UtilityMonthlyRevenue.objects.all()
     serializer_class = serializers.UtilityMonthlyRevenueSerializer
@@ -103,7 +103,7 @@ class UtlityMonthlyRevenueViewSet(BaseViewSet):
         return queryset
 
 
-class UtlityMonthlyExpenseViewSet(BaseViewSet):
+class UtilityMonthlyExpenseViewSet(BaseViewSet):
     """View for managing UtilitieMonthlyExpense API"""
     queryset = models.UtilityMonthlyExpense.objects.all()
     serializer_class = serializers.UtilityMonthlyExpenseSerializer
@@ -119,7 +119,7 @@ class UtlityMonthlyExpenseViewSet(BaseViewSet):
         return queryset
 
 
-class UtlityDailyProductionViewSet(BaseViewSet):
+class UtilityDailyProductionViewSet(BaseViewSet):
     """View for managing UtilitieDailyProduction API"""
     queryset = models.UtilityDailyProduction.objects.all()
     serializer_class = serializers.UtilityDailyProductionSerializer

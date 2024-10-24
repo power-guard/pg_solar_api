@@ -116,7 +116,7 @@ class CurtailmentEvent(models.Model):
 """
 Utility data Model are created below this
 """
-class UtlityPlantId(models.Model):
+class UtilityPlantId(models.Model):
     plant_id = models.CharField(max_length=100, unique=True)
     group = models.ForeignKey(LoggerPlantGroup, on_delete=models.CASCADE, default=1)
     
@@ -131,7 +131,7 @@ class UtlityPlantId(models.Model):
 
 
 class UtilityMonthlyRevenue(models.Model):
-    plant_id = models.ForeignKey(UtlityPlantId, on_delete=models.CASCADE)
+    plant_id = models.ForeignKey(UtilityPlantId, on_delete=models.CASCADE)
     contract_id = models.CharField(max_length=50, blank=True, null=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
@@ -161,7 +161,7 @@ class UtilityMonthlyRevenue(models.Model):
 
 
 class UtilityMonthlyExpense(models.Model):
-    plant_id = models.ForeignKey(UtlityPlantId, on_delete=models.CASCADE)
+    plant_id = models.ForeignKey(UtilityPlantId, on_delete=models.CASCADE)
     used_electricity_kwh = models.DecimalField(max_digits=10, decimal_places=2,
                                      blank=True, null=True)
     used_amount_jpy = models.DecimalField(max_digits=10, decimal_places=2,
@@ -183,7 +183,7 @@ class UtilityMonthlyExpense(models.Model):
 
 
 class UtilityDailyProduction(models.Model):
-    plant_id = models.ForeignKey(UtlityPlantId, on_delete=models.CASCADE)
+    plant_id = models.ForeignKey(UtilityPlantId, on_delete=models.CASCADE)
     power_production_kwh = models.DecimalField(max_digits=10, decimal_places=2,
                                      blank=True, null=True)
     production_date = models.DateField(null=True, blank=True)

@@ -15,10 +15,10 @@ router.register(r'curtailment-event', views.CurtailmentEventViewSet, basename='c
 router.register(r'loggers-plants-group', views.LoggerPlantGroupViewSet, basename='loggers-plants-group')
 
 # Utility-related ViewSets
-router.register(r'utlity-monthly-revenue', views.UtlityMonthlyRevenueViewSet, basename='utlity-monthly-revenue')
-router.register(r'utlity-monthly-expense', views.UtlityMonthlyExpenseViewSet, basename='utlity-monthly-expense')
-router.register(r'utlity-daily-production', views.UtlityDailyProductionViewSet, basename='utlity-daily-production')
-router.register(r'utlity-plants-list', views.UtlityPlantIdViewSet, basename='utlity-plants-list')
+router.register(r'utility-monthly-revenue', views.UtilityMonthlyRevenueViewSet, basename='utility-monthly-revenue')
+router.register(r'utility-monthly-expense', views.UtilityMonthlyExpenseViewSet, basename='utility-monthly-expense')
+router.register(r'utility-daily-production', views.UtilityDailyProductionViewSet, basename='utility-daily-production')
+router.register(r'utility-plants-list', views.UtilityPlantIdViewSet, basename='utility-plants-list')
 
 # Define the URL patterns
 urlpatterns = [

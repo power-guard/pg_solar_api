@@ -69,7 +69,7 @@ serializers for Utilitie
 """
 class UtilityPlantIdSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.UtlityPlantId
+        model = models.UtilityPlantId
         fields = '__all__'
         read_only_fields = ['id', 'created_at', 'updated_at']
 
@@ -91,7 +91,7 @@ class UtilityMonthlyRevenueSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         plant_id_data = validated_data.pop('plant_id')
-        plant_id, created = models.UtlityPlantId.objects.get_or_create(plant_id=plant_id_data['plant_id'])
+        plant_id, created = models.UtilityPlantId.objects.get_or_create(plant_id=plant_id_data['plant_id'])
         validated_data['plant_id'] = plant_id
         return models.UtilityMonthlyRevenue.objects.create(**validated_data)
 
@@ -111,7 +111,7 @@ class UtilityMonthlyExpenseSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         plant_id_data = validated_data.pop('plant_id')
-        plant_id, created = models.UtlityPlantId.objects.get_or_create(plant_id=plant_id_data['plant_id'])
+        plant_id, created = models.UtilityPlantId.objects.get_or_create(plant_id=plant_id_data['plant_id'])
         validated_data['plant_id'] = plant_id
         return models.UtilityMonthlyExpense.objects.create(**validated_data)
 
@@ -131,6 +131,6 @@ class UtilityDailyProductionSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         plant_id_data = validated_data.pop('plant_id')
-        plant_id, created = models.UtlityPlantId.objects.get_or_create(plant_id=plant_id_data['plant_id'])
+        plant_id, created = models.UtilityPlantId.objects.get_or_create(plant_id=plant_id_data['plant_id'])
         validated_data['plant_id'] = plant_id
         return models.UtilityDailyProduction.objects.create(**validated_data)

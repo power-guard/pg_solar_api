@@ -39,8 +39,8 @@ class CurtailmentEventAdmin(admin.ModelAdmin):
 """
 Admin view for Utilitie detais
 """
-@admin.register(models.UtlityPlantId)
-class UtlityPlantIdAdmin(admin.ModelAdmin):
+@admin.register(models.UtilityPlantId)
+class UtilityPlantIdAdmin(admin.ModelAdmin):
     list_display = ('plant_id', 'group', 'created_at', 'updated_at','user')
 
 
