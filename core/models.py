@@ -33,7 +33,7 @@ class PowerPlantDetail(models.Model):
     location = models.CharField(max_length=255, blank=True, null=True)
     image = models.ImageField(upload_to='plant_images/', blank=True, null=True)
 
-    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
 
@@ -55,7 +55,7 @@ Group for the Logger and Plantid
 class LoggerPlantGroup(models.Model):
     group_name = models.CharField(max_length=100, unique=True)
 
-    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
 
@@ -70,7 +70,7 @@ class LoggerCategory(models.Model):
     logger_name = models.CharField(max_length=100, unique=True)
     group = models.ForeignKey(LoggerPlantGroup, on_delete=models.CASCADE, default=1)
 
-    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
 
@@ -102,7 +102,7 @@ class CurtailmentEvent(models.Model):
     end_time = models.TimeField()
 
     status = models.BooleanField(default=True)
-    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
 
@@ -120,7 +120,7 @@ class UtilityPlantId(models.Model):
     plant_id = models.CharField(max_length=100, unique=True)
     group = models.ForeignKey(LoggerPlantGroup, on_delete=models.CASCADE, default=1)
     
-    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
 
@@ -151,7 +151,7 @@ class UtilityMonthlyRevenue(models.Model):
     rd = models.CharField(max_length=7, blank=True, null=True)
 
     status = models.BooleanField(default=True) 
-    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
 
@@ -172,7 +172,7 @@ class UtilityMonthlyExpense(models.Model):
     rd = models.CharField(max_length=7, blank=True, null=True)
 
     status = models.BooleanField(default=True)
-    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
 
@@ -191,7 +191,7 @@ class UtilityDailyProduction(models.Model):
     rd = models.CharField(max_length=7, blank=True, null=True)
 
     status = models.BooleanField(default=True)
-    updated_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
 

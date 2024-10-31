@@ -71,7 +71,7 @@ class UtilityPlantIdSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UtilityPlantId
         fields = '__all__'
-        read_only_fields = ['id', 'created_at', 'updated_at']
+        read_only_fields = ['id']
 
 
 class UtilityMonthlyRevenueSerializer(serializers.ModelSerializer):
@@ -87,7 +87,7 @@ class UtilityMonthlyRevenueSerializer(serializers.ModelSerializer):
             'sales_amount_jpy', 'tax_jpy', 'average_daily_sales_kwh', 'rd', 'status',
             'user', 'created_at', 'updated_at'
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at']
+        read_only_fields = ['id']
 
     def create(self, validated_data):
         plant_id_data = validated_data.pop('plant_id')
@@ -107,7 +107,7 @@ class UtilityMonthlyExpenseSerializer(serializers.ModelSerializer):
             'id', 'plant_id', 'used_electricity_kwh', 'used_amount_jpy', 'tax_jpy',
             'rd', 'status', 'user', 'created_at', 'updated_at'
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at']
+        read_only_fields = ['id']
 
     def create(self, validated_data):
         plant_id_data = validated_data.pop('plant_id')
@@ -127,7 +127,7 @@ class UtilityDailyProductionSerializer(serializers.ModelSerializer):
             'id', 'plant_id', 'power_production_kwh', 'production_date',
             'rd', 'status', 'user', 'created_at', 'updated_at'
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at']
+        read_only_fields = ['id']
 
     def create(self, validated_data):
         plant_id_data = validated_data.pop('plant_id')

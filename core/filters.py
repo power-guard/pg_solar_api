@@ -91,17 +91,21 @@ class LoggerPowerGenFilter(django_filters.FilterSet):
 
 
 class BaseUtilityFilter(django_filters.FilterSet):
-    year_month = django_filters.CharFilter(method='filter_by_year_month')
+    rd = django_filters.CharFilter(method='filter_by_year_month')
     plant_id = django_filters.CharFilter(method='filter_by_plant_id')
     group_name = django_filters.CharFilter(method='filter_by_group_name')
 
     class Meta:
-        fields = ['year_month', 'plant_id', 'group_name']
+        fields = ['rd', 'plant_id', 'group_name']
 
     def filter_by_year_month(self, queryset, name, value):
         try:
-            # Filtering by 'rd' field which is in 'YYYY-MM' format
-            return queryset.filter(rd=value)
+            # Ensure the format is `YYYY-MM` before filtering
+            if len(value) == 7 and value.count('-') == 1:
+                return queryset.filter(rd__startswith=value)
+            else:
+                # If the format doesn't match, return none
+                return queryset.none()
         except ValueError:
             return queryset.none()
 
