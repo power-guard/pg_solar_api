@@ -94,6 +94,12 @@ class LoggerPowerGen(models.Model):
     class Meta:
         unique_together = [('logger_name', 'date')]
 
+    def save(self, *args, **kwargs):
+        # Set status to False if updated_at and created_at differ
+        if self.created_at and self.updated_at and self.created_at != self.updated_at:
+            self.status = False
+        super().save(*args, **kwargs)
+
 
 class CurtailmentEvent(models.Model):
     plant_id = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
@@ -109,6 +115,13 @@ class CurtailmentEvent(models.Model):
 
     def __str__(self):
         return f"Curtailment Event for {self.plant_id.plant_name} on {self.date}"
+    
+
+    def save(self, *args, **kwargs):
+        # Set status to False if updated_at and created_at differ
+        if self.created_at and self.updated_at and self.created_at != self.updated_at:
+            self.status = False
+        super().save(*args, **kwargs)
 
 
 
@@ -159,6 +172,12 @@ class UtilityMonthlyRevenue(models.Model):
         # Define unique constraint based on plant_id, period_year, and period_month
         unique_together = [('plant_id', 'contract_id', 'rd')]
 
+    def save(self, *args, **kwargs):
+        # Set status to False if updated_at and created_at differ
+        if self.created_at and self.updated_at and self.created_at != self.updated_at:
+            self.status = False
+        super().save(*args, **kwargs)
+
 
 class UtilityMonthlyExpense(models.Model):
     plant_id = models.ForeignKey(UtilityPlantId, on_delete=models.CASCADE)
@@ -181,6 +200,12 @@ class UtilityMonthlyExpense(models.Model):
         # Define unique constraint based on plant_id, period_year, and period_month
         unique_together = [('plant_id', 'rd')]
 
+    def save(self, *args, **kwargs):
+        # Set status to False if updated_at and created_at differ
+        if self.created_at and self.updated_at and self.created_at != self.updated_at:
+            self.status = False
+        super().save(*args, **kwargs)
+
 
 class UtilityDailyProduction(models.Model):
     plant_id = models.ForeignKey(UtilityPlantId, on_delete=models.CASCADE)
@@ -199,3 +224,10 @@ class UtilityDailyProduction(models.Model):
     class Meta:
         # Define unique constraint based on plant_id, period_year, and period_month
         unique_together = [('plant_id', 'production_date')]
+
+    
+    def save(self, *args, **kwargs):
+        # Set status to False if updated_at and created_at differ
+        if self.created_at and self.updated_at and self.created_at != self.updated_at:
+            self.status = False
+        super().save(*args, **kwargs)
