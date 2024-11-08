@@ -68,6 +68,8 @@ Solar power plan detsils
 
 class LoggerCategory(models.Model):
     logger_name = models.CharField(max_length=100, unique=True)
+    alter_plant_id = models.CharField(max_length=100, null=True, blank=True)
+    
     group = models.ForeignKey(LoggerPlantGroup, on_delete=models.CASCADE, default=1)
 
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
@@ -101,36 +103,13 @@ class LoggerPowerGen(models.Model):
         super().save(*args, **kwargs)
 
 
-class CurtailmentEvent(models.Model):
-    plant_id = models.ForeignKey(LoggerCategory, on_delete=models.CASCADE)
-    date = models.DateField()
-    start_time = models.TimeField()
-    end_time = models.TimeField()
-
-    status = models.BooleanField(default=True)
-    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
-    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
-
-
-    def __str__(self):
-        return f"Curtailment Event for {self.plant_id.plant_name} on {self.date}"
-    
-
-    def save(self, *args, **kwargs):
-        # Set status to False if updated_at and created_at differ
-        if self.created_at and self.updated_at and self.created_at != self.updated_at:
-            self.status = False
-        super().save(*args, **kwargs)
-
-
-
 
 """
 Utility data Model are created below this
 """
 class UtilityPlantId(models.Model):
     plant_id = models.CharField(max_length=100, unique=True)
+    alter_plant_id = models.CharField(max_length=100, null=True, blank=True)
     group = models.ForeignKey(LoggerPlantGroup, on_delete=models.CASCADE, default=1)
     
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
@@ -226,6 +205,33 @@ class UtilityDailyProduction(models.Model):
         unique_together = [('plant_id', 'production_date')]
 
     
+    def save(self, *args, **kwargs):
+        # Set status to False if updated_at and created_at differ
+        if self.created_at and self.updated_at and self.created_at != self.updated_at:
+            self.status = False
+        super().save(*args, **kwargs)
+
+# Curtailment model
+
+class CurtailmentEvent(models.Model):
+    plant_id = models.ForeignKey(UtilityPlantId, on_delete=models.CASCADE)
+    date = models.DateField(null=True, blank=True)
+    start_time = models.TimeField(null=True, blank=True)
+    end_time = models.TimeField(null=True, blank=True)
+
+    status = models.BooleanField(default=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
+
+
+    def __str__(self):
+        return f"Curtailment Event for {self.plant_id.plant_id} on {self.date}"
+    
+    class Meta:
+        # Define unique constraint based on plant_id, period_year, and period_month
+        unique_together = [('plant_id', 'date')]
+
     def save(self, *args, **kwargs):
         # Set status to False if updated_at and created_at differ
         if self.created_at and self.updated_at and self.created_at != self.updated_at:
