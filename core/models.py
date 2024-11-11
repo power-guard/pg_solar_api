@@ -218,7 +218,8 @@ class CurtailmentEvent(models.Model):
     date = models.DateField(null=True, blank=True)
     start_time = models.TimeField(null=True, blank=True)
     end_time = models.TimeField(null=True, blank=True)
-
+    # Store year and month as a string in 'YYYY-MM' format
+    rd = models.CharField(max_length=7, blank=True, null=True)
     status = models.BooleanField(default=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)

@@ -33,7 +33,7 @@ class LoggerPowerGenAdmin(admin.ModelAdmin):
 
 @admin.register(models.CurtailmentEvent)
 class CurtailmentEventAdmin(admin.ModelAdmin):
-    list_display = ('plant_id', 'date', 'start_time', 'end_time','status',  'created_at', 'updated_at','user')
+    list_display = ('plant_id', 'date', 'start_time', 'end_time','status', 'rd', 'created_at', 'updated_at','user')
 
 
 """

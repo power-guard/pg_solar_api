@@ -56,12 +56,22 @@ class LoggerPowerGenSerializer(serializers.ModelSerializer):
 
 class CurtailmentEventSerializer(serializers.ModelSerializer):
     """Serializer for CurtailmentEvent."""
+    plant_id = serializers.CharField(source='plant_id.plant_id')
     user = serializers.StringRelatedField()
 
     class Meta:
         model = models.CurtailmentEvent
-        fields = '__all__'
+        fields = [
+            'id', 'plant_id', 'date', 'start_time', 'end_time',
+            'rd', 'status', 'user', 'created_at', 'updated_at'
+        ]
         read_only_fields = ['id']
+
+    def create(self, validated_data):
+        plant_id_data = validated_data.pop('plant_id')
+        plant_id, created = models.UtilityPlantId.objects.get_or_create(plant_id=plant_id_data['plant_id'])
+        validated_data['plant_id'] = plant_id
+        return models.UtilityMonthlyRevenue.objects.create(**validated_data)
 
 
 """

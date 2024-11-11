@@ -78,6 +78,16 @@ class CurtailmentEventViewSet(BaseViewSet):
     """View for managing CurtailmentEvent API"""
     queryset = models.CurtailmentEvent.objects.all()
     serializer_class = serializers.CurtailmentEventSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = filters.CurtailmentEventFilter
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        group_name = self.request.query_params.get('group_name', None)
+        if group_name:
+            # Apply custom filtering based on the group name
+            queryset = queryset.filter(plant_id__group__group_name=group_name)
+        return queryset
 
 
 

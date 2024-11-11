@@ -63,33 +63,6 @@ class LoggerPowerGenFilter(django_filters.FilterSet):
         return queryset.filter(logger_name__in=categories)
 
 
-# class UtilityFilter(django_filters.FilterSet):
-#     year_month = django_filters.CharFilter(method='filter_by_year_month')
-#     plant_id = django_filters.CharFilter(method='filter_by_plant_id')
-
-#     class Meta:
-#         model = UtilityMonthlyRevenue
-#         fields = ['year_month', 'plant_id']
-
-#     def filter_by_year_month(self, queryset, name, value):
-#         try:
-#             # `rd` field in 'YYYY-MM' format, used for filtering by year and month
-#             return queryset.filter(rd=value)
-#         except ValueError:
-#             return queryset.none()
-
-#     def filter_by_plant_id(self, queryset, name, value):
-#         # Split the comma-separated list of plant IDs
-#         plant_ids = [plant_id.strip() for plant_id in value.split(',')]
-#         # Filter UtilityMonthlyRevenue by the provided plant IDs
-#         return queryset.filter(plant_id__plant_id__in=plant_ids)
-
-#     def filter_by_group_name(self, queryset, name, value):
-#         # Filter by group name through the foreign key relationship
-#         return queryset.filter(plant_id__group__group_name=value)
-
-
-
 class BaseUtilityFilter(django_filters.FilterSet):
     rd = django_filters.CharFilter(method='filter_by_year_month')
     plant_id = django_filters.CharFilter(method='filter_by_plant_id')
@@ -131,3 +104,7 @@ class UtilityMonthlyExpenseFilter(BaseUtilityFilter):
 class UtilityDailyProductionFilter(BaseUtilityFilter):
     class Meta(BaseUtilityFilter.Meta):
         model = models.UtilityDailyProduction
+
+class CurtailmentEventFilter(BaseUtilityFilter):
+    class Meta(BaseUtilityFilter.Meta):
+        model = models.CurtailmentEvent
