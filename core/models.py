@@ -3,6 +3,8 @@ Creating the model to store the solar data.
 """
 from django.db import models
 from datetime import date
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 from django.conf import settings
 
@@ -225,15 +227,24 @@ class CurtailmentEvent(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
 
-
     def __str__(self):
         return f"Curtailment Event for {self.plant_id.plant_id} on {self.date}"
     
     class Meta:
-        # Define unique constraint based on plant_id, period_year, and period_month
+        # Define unique constraint based on plant_id and date
         unique_together = [('plant_id', 'date')]
 
+    def clean(self):
+        # Check if end_time is greater than start_time
+        if self.start_time and self.end_time and self.end_time <= self.start_time:
+            raise ValidationError({
+                'end_time': _('End time must be later than start time.')
+            })
+
     def save(self, *args, **kwargs):
+        # Run clean method to validate the model fields before saving
+        self.clean()
+
         # Set status to False if updated_at and created_at differ
         if self.created_at and self.updated_at and self.created_at != self.updated_at:
             self.status = False
