@@ -68,10 +68,13 @@ class CurtailmentEventSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
     def create(self, validated_data):
+        # Extract plant_id data and get or create the corresponding UtilityPlantId instance
         plant_id_data = validated_data.pop('plant_id')
         plant_id, created = models.UtilityPlantId.objects.get_or_create(plant_id=plant_id_data['plant_id'])
         validated_data['plant_id'] = plant_id
-        return models.UtilityMonthlyRevenue.objects.create(**validated_data)
+        
+        # Create and return a CurtailmentEvent instance instead of UtilityMonthlyRevenue
+        return models.CurtailmentEvent.objects.create(**validated_data)
 
 
 """
