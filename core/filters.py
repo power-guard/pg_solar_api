@@ -3,6 +3,7 @@ from . import models
 from django.utils.dateparse import parse_date
 from datetime import timedelta
 
+
 class LoggerPowerGenFilter(django_filters.FilterSet):
     year_month = django_filters.CharFilter(method='filter_by_year_month')
     year_month_date = django_filters.CharFilter(method='filter_by_year_month_date')
@@ -13,12 +14,12 @@ class LoggerPowerGenFilter(django_filters.FilterSet):
         fields = ['year_month', 'year_month_date', 'logger_name']
 
     def filter_by_year_month(self, queryset, name, value):
+        """Filter queryset by year and month, returning data within the month."""
         try:
             year, month = map(int, value.split('-'))
-            start_date = f'{year}-{month:02d}-01'
-            start_date = parse_date(start_date)
+            start_date = parse_date(f'{year}-{month:02d}-01')
 
-            # Calculate the last day of the month
+            # Calculate the end date for the month
             next_month = start_date.replace(day=28) + timedelta(days=4)
             end_date = next_month - timedelta(days=next_month.day)
 
@@ -27,39 +28,27 @@ class LoggerPowerGenFilter(django_filters.FilterSet):
             return queryset.none()
 
     def filter_by_year_month_date(self, queryset, name, value):
+        """Filter queryset by exact date or entire month if only year and month are provided."""
         try:
-            # Check if value has a day part
             parts = value.split('-')
-            year = int(parts[0])
-            month = int(parts[1])
+            year, month = int(parts[0]), int(parts[1])
             day = int(parts[2]) if len(parts) > 2 else None
 
             if day:
-                # If a day is provided, filter by that specific date
-                start_date = f'{year}-{month:02d}-{day:02d}'
-                end_date = start_date  # End date is the same as start date
+                start_date = parse_date(f'{year}-{month:02d}-{day:02d}')
+                return queryset.filter(date=start_date)
             else:
-                # If no day is provided, filter for the entire month
-                start_date = f'{year}-{month:02d}-01'
-                end_date = (parse_date(start_date).replace(day=28) + timedelta(days=4)).replace(day=1) - timedelta(days=1)
+                start_date = parse_date(f'{year}-{month:02d}-01')
+                end_date = (start_date.replace(day=28) + timedelta(days=4)).replace(day=1) - timedelta(days=1)
 
-            start_date = parse_date(start_date)
-            end_date = parse_date(end_date)
-
-            return queryset.filter(date__range=[start_date, end_date])
+                return queryset.filter(date__range=[start_date, end_date])
         except (ValueError, TypeError):
             return queryset.none()
 
     def filter_by_logger_names(self, queryset, name, value):
-        # Split the comma-separated list of logger names
+        """Filter queryset by multiple logger names."""
         names = value.split(',')
-        # Filter LoggerCategory by the provided logger names
         categories = models.LoggerCategory.objects.filter(logger_name__in=names)
-        return queryset.filter(logger_name__in=categories)
-
-    def filter_by_group_name(self, queryset, group_name):
-        # Filter LoggerCategory by the provided group name
-        categories = models.LoggerCategory.objects.filter(group__group_name=group_name)
         return queryset.filter(logger_name__in=categories)
 
 
@@ -72,23 +61,18 @@ class BaseUtilityFilter(django_filters.FilterSet):
         fields = ['rd', 'plant_id', 'group_name']
 
     def filter_by_year_month(self, queryset, name, value):
-        try:
-            # Ensure the format is `YYYY-MM` before filtering
-            if len(value) == 7 and value.count('-') == 1:
-                return queryset.filter(rd__startswith=value)
-            else:
-                # If the format doesn't match, return none
-                return queryset.none()
-        except ValueError:
-            return queryset.none()
+        """Filter queryset by year and month if format is `YYYY-MM`."""
+        if len(value) == 7 and value.count('-') == 1:
+            return queryset.filter(rd__startswith=value)
+        return queryset.none()
 
     def filter_by_plant_id(self, queryset, name, value):
-        # Split the comma-separated list of plant IDs
+        """Filter queryset by plant IDs."""
         plant_ids = [plant_id.strip() for plant_id in value.split(',')]
         return queryset.filter(plant_id__plant_id__in=plant_ids)
 
     def filter_by_group_name(self, queryset, name, value):
-        # Filter by group name through the foreign key relationship
+        """Filter queryset by group name."""
         return queryset.filter(plant_id__group__group_name=value)
 
 
@@ -101,10 +85,61 @@ class UtilityMonthlyExpenseFilter(BaseUtilityFilter):
     class Meta(BaseUtilityFilter.Meta):
         model = models.UtilityMonthlyExpense
 
+
 class UtilityDailyProductionFilter(BaseUtilityFilter):
     class Meta(BaseUtilityFilter.Meta):
         model = models.UtilityDailyProduction
 
+
 class CurtailmentEventFilter(BaseUtilityFilter):
     class Meta(BaseUtilityFilter.Meta):
         model = models.CurtailmentEvent
+
+
+class LoggerCategoryFilter(django_filters.FilterSet):
+    logger_name = django_filters.CharFilter(method='filter_by_logger_name')
+    group_name = django_filters.CharFilter(method='filter_by_group_name')
+
+    class Meta:
+        model = models.LoggerCategory
+        fields = ['logger_name', 'group_name']
+
+    def filter_by_logger_name(self, queryset, name, value):
+        """Filter LoggerCategory by logger names."""
+        names = value.split(',')
+        return queryset.filter(logger_name__in=names)
+
+    def filter_by_group_name(self, queryset, name, value):
+        """Filter LoggerCategory by group name."""
+        return queryset.filter(group__group_name=value)
+
+
+class UtilityPlantIdFilter(django_filters.FilterSet):
+    plant_id = django_filters.CharFilter(method='filter_by_plant_id')
+    group_name = django_filters.CharFilter(method='filter_by_group_name')
+
+    class Meta:
+        model = models.UtilityPlantId
+        fields = ['plant_id', 'group_name']
+
+    def filter_by_plant_id(self, queryset, name, value):
+        """Filter by plant ID."""
+        plant_ids = value.split(',')
+        return queryset.filter(plant_id__in=plant_ids)
+
+    def filter_by_group_name(self, queryset, name, value):
+        """Filter by group name."""
+        return queryset.filter(group__group_name=value)
+
+
+class PowerPlantDetailFilter(django_filters.FilterSet):
+    system_name = django_filters.CharFilter(method='filter_by_system_name')
+
+    class Meta:
+        model = models.PowerPlantDetail
+        fields = ['system_name']
+
+    def filter_by_system_name(self, queryset, name, value):
+        """Filter PowerPlantDetail by system name."""
+        names = value.split(',')
+        return queryset.filter(system_name__in=names)

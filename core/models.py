@@ -73,7 +73,7 @@ class LoggerCategory(models.Model):
     alter_plant_id = models.CharField(max_length=100, null=True, blank=True)
     
     group = models.ForeignKey(LoggerPlantGroup, on_delete=models.CASCADE, default=1)
-
+    status = models.BooleanField(default=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)

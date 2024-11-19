@@ -43,18 +43,24 @@ class LoggerPlantGroupViewSet(BaseViewSet):
     """View for managing LoggerPlantGroup API"""
     serializer_class = serializers.LoggerPlantGroupSerializer
     queryset = models.LoggerPlantGroup.objects.all()
+    filter_backends = (DjangoFilterBackend,)
+    
 
 
 class PowerPlantDetailViewSet(BaseViewSet):
     """View for managing PowerPlantDetail API"""
     serializer_class = serializers.PowerPlantDetailSerializer
     queryset = models.PowerPlantDetail.objects.all()
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = filters.PowerPlantDetailFilter
 
 
 class LoggerCategoryViewSet(BaseViewSet):
     """View for managing LoggerCategory API"""
     serializer_class = serializers.LoggerCategorySerializer
     queryset = models.LoggerCategory.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = filters.LoggerCategoryFilter
 
 
 class LoggerPowerGenViewSet(BaseViewSet):
@@ -95,6 +101,8 @@ class UtilityPlantIdViewSet(BaseViewSet):
     """View for managing UtilityPlantId API"""
     queryset = models.UtilityPlantId.objects.all()
     serializer_class = serializers.UtilityPlantIdSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = filters.UtilityPlantIdFilter
 
 
 class UtilityMonthlyRevenueViewSet(BaseViewSet):

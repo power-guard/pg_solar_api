@@ -7,6 +7,8 @@ serializers for PowerPlantDetail
 """
 class PowerPlantDetailSerializer(serializers.ModelSerializer):
     """Serializer for PowerPlantDetail."""
+    user = serializers.StringRelatedField()
+
     class Meta:
         model = models.PowerPlantDetail
         fields = '__all__'
@@ -18,23 +20,27 @@ serializers for logger and plant group
 """
 class LoggerPlantGroupSerializer(serializers.ModelSerializer):
     """Serializer for PowerPlantDetail."""
+    user = serializers.StringRelatedField()
+
     class Meta:
         model = models.LoggerPlantGroup
         fields = '__all__'
         read_only_fields = ['user']
 
 
-
-
 """
 serializers for solar power plan
 """
+
 class LoggerCategorySerializer(serializers.ModelSerializer):
     """Serializer for LoggerCategory."""
+    group = serializers.CharField(source='group.group_name')  # Display group name
+    user = serializers.StringRelatedField()  # Display user as string
+
     class Meta:
         model = models.LoggerCategory
         fields = '__all__'
-        read_only_fields = ['id']
+        read_only_fields = ['user']
 
 
 class LoggerPowerGenSerializer(serializers.ModelSerializer):
@@ -81,6 +87,9 @@ class CurtailmentEventSerializer(serializers.ModelSerializer):
 serializers for Utilitie
 """
 class UtilityPlantIdSerializer(serializers.ModelSerializer):
+    group = serializers.CharField(source='group.group_name')  # Display group name
+    user = serializers.StringRelatedField()
+
     class Meta:
         model = models.UtilityPlantId
         fields = '__all__'
