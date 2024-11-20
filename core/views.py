@@ -1,4 +1,5 @@
 from django.utils.decorators import method_decorator
+from rest_framework.views import APIView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, mixins, status
 from rest_framework.response import Response
@@ -153,8 +154,11 @@ class UtilityDailyProductionViewSet(BaseViewSet):
         return queryset
 
 
-
-
+class PowerPlantDetailChoicesView(APIView):
+    def get(self, request, *args, **kwargs):
+        # Returning the RESOURCE_CHOICES as a dictionary
+        resource_choices = dict(models.PowerPlantDetail.RESOURCE_CHOICES)
+        return Response({"resource_choices": resource_choices}, status=status.HTTP_200_OK)
 
 
 

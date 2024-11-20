@@ -20,8 +20,10 @@ router.register(r'utility-monthly-expense', views.UtilityMonthlyExpenseViewSet, 
 router.register(r'utility-daily-production', views.UtilityDailyProductionViewSet, basename='utility-daily-production')
 router.register(r'utility-plants-list', views.UtilityPlantIdViewSet, basename='utility-plants-list')
 
+
 # Define the URL patterns
 urlpatterns = [
     path('', include(router.urls)),  # Register all ViewSet URLs
+    path('power-plant-resource-choices/', views.PowerPlantDetailChoicesView.as_view(), name='PowerPlantDetailChoicesView'), 
     #path('csrf-token-endpoint/', views.csrf_token_view, name='csrf_token'),  # CSRF token endpoint
 ]

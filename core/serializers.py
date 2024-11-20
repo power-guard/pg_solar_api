@@ -7,12 +7,19 @@ serializers for PowerPlantDetail
 """
 class PowerPlantDetailSerializer(serializers.ModelSerializer):
     """Serializer for PowerPlantDetail."""
+    RESOURCE_CHOICES = models.PowerPlantDetail.RESOURCE_CHOICES
     user = serializers.StringRelatedField()
 
     class Meta:
         model = models.PowerPlantDetail
         fields = '__all__'
         read_only_fields = ['user']
+
+    # Add a custom field to expose the choices
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['resource_choices'] = dict(self.RESOURCE_CHOICES)
+        return representation
 
 
 """

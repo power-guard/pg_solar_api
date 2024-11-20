@@ -17,6 +17,7 @@ Power plan details
 class PowerPlantDetail(models.Model):
     RESOURCE_CHOICES = [
         ('Solar', 'Solar'),
+        ('Biomass', 'Biomass'),
         ('Wind', 'Wind'),
     ]
     
