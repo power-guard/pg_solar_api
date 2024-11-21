@@ -40,14 +40,27 @@ serializers for solar power plan
 """
 
 class LoggerCategorySerializer(serializers.ModelSerializer):
-    """Serializer for LoggerCategory."""
-    group = serializers.CharField(source='group.group_name')  # Display group name
-    user = serializers.StringRelatedField()  # Display user as string
+    group = serializers.PrimaryKeyRelatedField(queryset=models.LoggerPlantGroup.objects.all())
+    status = serializers.BooleanField()
 
     class Meta:
         model = models.LoggerCategory
         fields = '__all__'
-        read_only_fields = ['user']
+
+    def update(self, instance, validated_data):
+        group = validated_data.get('group', None)
+        if group:
+            instance.group = group  # Correctly assign the foreign key ID
+
+        # Update other fields if provided
+        instance.logger_name = validated_data.get('logger_name', instance.logger_name)
+        instance.alter_plant_id = validated_data.get('alter_plant_id', instance.alter_plant_id)
+        instance.status = validated_data.get('status', instance.status)
+        instance.user = validated_data.get('user', instance.user)
+
+        # Save the instance with updated data
+        instance.save()
+        return instance
 
 
 class LoggerPowerGenSerializer(serializers.ModelSerializer):
