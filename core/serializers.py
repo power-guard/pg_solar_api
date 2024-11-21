@@ -32,7 +32,7 @@ class LoggerPlantGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.LoggerPlantGroup
         fields = '__all__'
-        read_only_fields = ['user']
+        read_only_fields = ['id']
 
 
 """
@@ -42,10 +42,12 @@ serializers for solar power plan
 class LoggerCategorySerializer(serializers.ModelSerializer):
     group = serializers.PrimaryKeyRelatedField(queryset=models.LoggerPlantGroup.objects.all())
     status = serializers.BooleanField()
+    user = serializers.StringRelatedField()
 
     class Meta:
         model = models.LoggerCategory
         fields = '__all__'
+        read_only_fields = ['id']
 
     def update(self, instance, validated_data):
         group = validated_data.get('group', None)
