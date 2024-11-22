@@ -109,13 +109,27 @@ class CurtailmentEventSerializer(serializers.ModelSerializer):
 serializers for Utilitie
 """
 class UtilityPlantIdSerializer(serializers.ModelSerializer):
-    group = serializers.CharField(source='group.group_name')  # Display group name
+    group = serializers.PrimaryKeyRelatedField(queryset=models.LoggerPlantGroup.objects.all())  # Display group name
     user = serializers.StringRelatedField()
 
     class Meta:
         model = models.UtilityPlantId
         fields = '__all__'
         read_only_fields = ['id']
+    
+    def update(self, instance, validated_data):
+        group = validated_data.get('group', None)
+        if group:
+            instance.group = group  # Correctly assign the foreign key ID
+
+        # Update other fields if provided
+        instance.plant_id = validated_data.get('logger_name', instance.plant_id)
+        instance.alter_plant_id = validated_data.get('alter_plant_id', instance.alter_plant_id)
+        instance.user = validated_data.get('user', instance.user)
+
+        # Save the instance with updated data
+        instance.save()
+        return instance
 
 
 class UtilityMonthlyRevenueSerializer(serializers.ModelSerializer):
