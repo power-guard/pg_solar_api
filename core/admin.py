@@ -7,7 +7,7 @@ Admin view for Power plan details
 """
 @admin.register(models.PowerPlantDetail)
 class PowerPlantDetailAdmin(admin.ModelAdmin):
-    list_display = ('system_name', 'system_id',  'country_name', 'latitude', 'longitude', 'azimuth', 'tilt', 'capacity_dc', 'created_at', 'updated_at','user')
+    list_display = ('system_name', 'system_id', 'group', 'country_name', 'latitude', 'longitude', 'azimuth', 'tilt', 'capacity_dc', 'created_at', 'updated_at','user')
 
 
 """

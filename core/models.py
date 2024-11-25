@@ -10,17 +10,29 @@ from django.conf import settings
 
 
 """
-Power plan details 
+Group for the Logger and Plantid
 """
 
+class LoggerPlantGroup(models.Model):
+    group_name = models.CharField(max_length=100, unique=True)
 
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
+
+    def __str__(self):
+        return self.group_name
+
+
+"""
+Power plan details 
+"""
 class PowerPlantDetail(models.Model):
     RESOURCE_CHOICES = [
         ('Solar', 'Solar'),
         ('Biomass', 'Biomass'),
         ('Wind', 'Wind'),
     ]
-    
     system_name = models.CharField(max_length=50)
     system_id = models.CharField(max_length=50)
     customer_name = models.CharField(max_length=100)
@@ -34,7 +46,7 @@ class PowerPlantDetail(models.Model):
     capacity_dc = models.DecimalField(max_digits=10, decimal_places=2)
     capacity_ac = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     location = models.CharField(max_length=255, blank=True, null=True)
-
+    group = models.ForeignKey(LoggerPlantGroup, on_delete=models.CASCADE, default=1)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
@@ -43,26 +55,14 @@ class PowerPlantDetail(models.Model):
     
     class Meta:
         # Define unique constraint based on plant_id, plant_name.
-        unique_together = [('system_name', 'system_id')]
+        unique_together = [('system_name', 'system_id','group')]
 
     def __str__(self):
         return self.system_name
 
 
 
-"""
-Group for the Logger and Plantid
-"""
 
-class LoggerPlantGroup(models.Model):
-    group_name = models.CharField(max_length=100, unique=True)
-
-    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
-    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
-
-    def __str__(self):
-        return self.group_name
 
 """
 Solar power plan detsils
