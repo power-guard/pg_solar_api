@@ -34,7 +34,6 @@ class PowerPlantDetail(models.Model):
     capacity_dc = models.DecimalField(max_digits=10, decimal_places=2)
     capacity_ac = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     location = models.CharField(max_length=255, blank=True, null=True)
-    image = models.ImageField(upload_to='plant_images/', blank=True, null=True)
 
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
