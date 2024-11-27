@@ -134,12 +134,17 @@ class UtilityPlantIdFilter(django_filters.FilterSet):
 
 class PowerPlantDetailFilter(django_filters.FilterSet):
     system_name = django_filters.CharFilter(method='filter_by_system_name')
+    group_name = django_filters.CharFilter(method='filter_by_group_name')
 
     class Meta:
         model = models.PowerPlantDetail
-        fields = ['system_name']
+        fields = ['system_name', 'group_name']
 
     def filter_by_system_name(self, queryset, name, value):
         """Filter PowerPlantDetail by system name."""
         names = value.split(',')
         return queryset.filter(system_name__in=names)
+
+    def filter_by_group_name(self, queryset, name, value):
+        """Filter PowerPlantDetail by group name."""
+        return queryset.filter(group__group_name__icontains=value)
