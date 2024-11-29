@@ -58,7 +58,28 @@ class PowerPlantDetail(models.Model):
         unique_together = [('system_name', 'system_id','group')]
 
     def __str__(self):
-        return self.system_name
+        return f'{self.system_id} of {self.group}'
+    
+
+class GisWeather(models.Model):
+    # ForeignKey referencing 'PowerPlantDetail' via 'id'.
+    power_plant = models.ForeignKey('PowerPlantDetail', on_delete=models.CASCADE, related_name='related_models')
+    ghi = models.DecimalField(max_digits=16, decimal_places=10)
+    gti = models.DecimalField(max_digits=16, decimal_places=10)
+    pvout = models.DecimalField(max_digits=16, decimal_places=10)
+    date = models.DateField(null=True, blank=True)
+
+    # Additional fields for this model
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
+
+    class Meta:
+        # Custom constraint to enforce uniqueness combining power_plant's fields if necessary.
+        unique_together = [('power_plant', 'date')]
+
+    def __str__(self):
+        return f'Related to {self.power_plant.system_id} in group {self.power_plant.group}'
 
 
 

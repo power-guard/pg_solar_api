@@ -24,6 +24,21 @@ class PowerPlantDetailSerializer(serializers.ModelSerializer):
 
 
 """
+serializers for gis weather
+"""
+class GisWeatherSerializer(serializers.ModelSerializer):
+    """Serializer for PowerPlantDetail."""
+    user = serializers.StringRelatedField()
+    power_plant = serializers.StringRelatedField()
+
+    class Meta:
+        model = models.GisWeather
+        fields = '__all__'
+        read_only_fields = ['user','power_plant']
+
+
+
+"""
 serializers for logger and plant group
 """
 class LoggerPlantGroupSerializer(serializers.ModelSerializer):

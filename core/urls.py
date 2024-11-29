@@ -7,6 +7,9 @@ router = DefaultRouter()
 
 # Register ViewSets with the router
 router.register(r'power-plant-detail', views.PowerPlantDetailViewSet, basename='power-plant-detail')
+router.register(r'gis-weather-data', views.GisWeatherViewSet, basename='gis-weather-data')
+
+
 router.register(r'logger-power-gen', views.LoggerPowerGenViewSet, basename='logger-power-gen')
 router.register(r'loggercategories', views.LoggerCategoryViewSet, basename='loggercategories')
 router.register(r'curtailment-event', views.CurtailmentEventViewSet, basename='curtailment-event')

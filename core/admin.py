@@ -9,6 +9,13 @@ Admin view for Power plan details
 class PowerPlantDetailAdmin(admin.ModelAdmin):
     list_display = ('system_name', 'system_id', 'group', 'country_name', 'latitude', 'longitude', 'azimuth', 'tilt', 'capacity_dc', 'created_at', 'updated_at','user')
 
+"""
+Admin view for GIS data
+"""
+@admin.register(models.GisWeather)
+class PowerPlantDetailAdmin(admin.ModelAdmin):
+    list_display = ('power_plant', 'date', 'ghi', 'gti', 'pvout', 'created_at', 'updated_at','user')
+
 
 """
 Group admin view

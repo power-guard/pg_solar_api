@@ -45,6 +45,12 @@ class LoggerPlantGroupViewSet(BaseViewSet):
     serializer_class = serializers.LoggerPlantGroupSerializer
     queryset = models.LoggerPlantGroup.objects.all()
     filter_backends = (DjangoFilterBackend,)
+
+class GisWeatherViewSet(BaseViewSet):
+    """View for managing LoggerPlantGroup API"""
+    serializer_class = serializers.GisWeatherSerializer
+    queryset = models.GisWeather.objects.all()
+    filter_backends = (DjangoFilterBackend,)
     
 
 
