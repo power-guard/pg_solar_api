@@ -62,26 +62,22 @@ class PowerPlantDetail(models.Model):
     
 
 class GisWeather(models.Model):
-    # ForeignKey referencing 'PowerPlantDetail' via 'id'.
+    # ForeignKey referencing the PowerPlantDetail model via its 'id'
+    # Ensures that each GIS record is linked to a specific power plant.
     power_plant = models.ForeignKey('PowerPlantDetail', on_delete=models.CASCADE, related_name='related_models')
-    ghi = models.DecimalField(max_digits=16, decimal_places=10)
-    gti = models.DecimalField(max_digits=16, decimal_places=10)
-    pvout = models.DecimalField(max_digits=16, decimal_places=10)
+    ghi = models.DecimalField(max_digits=8, decimal_places=3)
+    gti = models.DecimalField(max_digits=8, decimal_places=3)
+    pvout = models.DecimalField(max_digits=8, decimal_places=3)
     date = models.DateField(null=True, blank=True)
-
-    # Additional fields for this model
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
-    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True) 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
 
     class Meta:
-        # Custom constraint to enforce uniqueness combining power_plant's fields if necessary.
         unique_together = [('power_plant', 'date')]
 
     def __str__(self):
-        return f'Related to {self.power_plant.system_id} in group {self.power_plant.group}'
-
-
+        return f'GIS data for {self.power_plant.system_id} on {self.date}'
 
 
 
