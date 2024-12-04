@@ -51,6 +51,16 @@ class GisWeatherViewSet(BaseViewSet):
     serializer_class = serializers.GisWeatherSerializer
     queryset = models.GisWeather.objects.all()
     filter_backends = (DjangoFilterBackend,)
+    filterset_class = filters.GisWeatherFilter
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        group_name = self.request.query_params.get('group_name', None)
+        if group_name:
+            # Apply custom filtering based on the group name
+            categories = models.PowerPlantDetail.objects.filter(group__group_name=group_name)
+            queryset = queryset.filter(power_plant__in=categories)  # Use the correct field here
+        return queryset
     
 
 

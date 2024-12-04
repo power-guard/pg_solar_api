@@ -15,7 +15,6 @@ Group for the Logger and Plantid
 
 class LoggerPlantGroup(models.Model):
     group_name = models.CharField(max_length=100, unique=True)
-
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
@@ -64,7 +63,7 @@ class PowerPlantDetail(models.Model):
 class GisWeather(models.Model):
     # ForeignKey referencing the PowerPlantDetail model via its 'id'
     # Ensures that each GIS record is linked to a specific power plant.
-    power_plant = models.ForeignKey('PowerPlantDetail', on_delete=models.CASCADE, related_name='related_models')
+    power_plant = models.ForeignKey(PowerPlantDetail, on_delete=models.CASCADE)
     ghi = models.DecimalField(max_digits=8, decimal_places=3)
     gti = models.DecimalField(max_digits=8, decimal_places=3)
     pvout = models.DecimalField(max_digits=8, decimal_places=3)

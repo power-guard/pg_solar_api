@@ -34,7 +34,7 @@ class GisWeatherSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.GisWeather
         fields = ['user', 'power_plant', 'ghi', 'gti', 'pvout', 'date']  
-        read_only_fields = ['user']
+        read_only_fields = ['user', 'power_plant']
 
 
 
