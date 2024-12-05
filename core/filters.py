@@ -152,11 +152,11 @@ class PowerPlantDetailFilter(django_filters.FilterSet):
 
 class GisWeatherFilter(django_filters.FilterSet):
     year_month = django_filters.CharFilter(method='filter_by_year_month')
-    group_name = django_filters.CharFilter(method='filter_by_group_name')
+    power_plant = django_filters.NumberFilter(field_name='power_plant', lookup_expr='exact')
 
     class Meta:
         model = models.GisWeather
-        fields = ['year_month', 'group_name']
+        fields = ['year_month', 'power_plant']
     
     def filter_by_year_month(self, queryset, name, value):
         """Filter queryset by year and month, returning data within the month."""
@@ -171,7 +171,3 @@ class GisWeatherFilter(django_filters.FilterSet):
             return queryset.filter(date__range=[start_date, end_date])
         except ValueError:
             return queryset.none()
-    
-    def filter_by_group_name(self, queryset, name, value):
-        """Filter queryset by group name."""
-        return queryset.filter(power_plant__group__group_name=value)

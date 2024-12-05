@@ -28,13 +28,21 @@ serializers for gis weather
 """
 class GisWeatherSerializer(serializers.ModelSerializer):
     """Serializer for PowerPlantDetail."""
-    user = serializers.StringRelatedField() 
-    power_plant = serializers.PrimaryKeyRelatedField(queryset=models.PowerPlantDetail.objects.all())
+    user = serializers.StringRelatedField()
+    power_plant_id = serializers.PrimaryKeyRelatedField(
+        queryset=models.PowerPlantDetail.objects.all(),
+        source='power_plant',  # Maps to the power_plant field in the model
+        write_only=True,       # Used for input (when pushing data)
+    )
+    power_plant_name = serializers.StringRelatedField(
+        source='power_plant',  # Uses the string representation for output
+        read_only=True         # Used for output (response only)
+    )
 
     class Meta:
         model = models.GisWeather
-        fields = ['user', 'power_plant', 'ghi', 'gti', 'pvout', 'date']  
-        read_only_fields = ['user', 'power_plant']
+        fields = ['user', 'power_plant_id', 'power_plant_name', 'ghi', 'gti', 'pvout', 'date']
+        read_only_fields = ['user', 'power_plant_name']
 
 
 
