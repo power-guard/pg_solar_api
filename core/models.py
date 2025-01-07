@@ -265,3 +265,36 @@ class CurtailmentEvent(models.Model):
         if self.created_at and self.updated_at and self.created_at != self.updated_at:
             self.status = False
         super().save(*args, **kwargs)
+
+
+class MailNotificatione(models.Model):
+    FROM_CHOICES = [
+        ("Major", "Major"),
+        ("Minor", "Minor"),
+        ("None", "None"),
+    ]
+
+    from_field = models.TextField(verbose_name="From")
+    to = models.TextField(verbose_name="To",null=True, blank=True)
+    date = models.DateField(null=True, blank=True)
+    mail_date_time = models.TextField(verbose_name="Mail Date&Time",null=True, blank=True)
+    subject = models.TextField(verbose_name="Subject",null=True, blank=True)
+    body = models.TextField(verbose_name="Body",null=True, blank=True)
+    impact_category = models.CharField(
+        max_length=10, 
+        choices=FROM_CHOICES, 
+        default="-",
+        blank=True, 
+        verbose_name="Impact Category"
+    )
+    memo = models.TextField(verbose_name="Memo", blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
+
+    class Meta:
+        unique_together = ('from_field', 'to', 'mail_date_time', 'subject')
+
+    def __str__(self):
+        return f"{self.subject} ({self.date})"
+    

@@ -183,3 +183,13 @@ class PowerPlantDetailChoicesView(APIView):
 # def csrf_token_view(request):
 #     """Returns the CSRF token for the client."""
 #     return JsonResponse({'csrfToken': get_token(request)})
+
+
+"""
+View for mail notification
+"""
+class MailNotificationeViewSet(BaseViewSet):
+    queryset = models.MailNotificatione.objects.all()
+    serializer_class = serializers.MailNotificationeSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = filters.MailNotificationeFilter

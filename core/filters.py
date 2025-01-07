@@ -1,4 +1,5 @@
 import django_filters
+from django_filters import DateFilter, CharFilter
 from . import models
 from django.utils.dateparse import parse_date
 from datetime import timedelta
@@ -171,3 +172,15 @@ class GisWeatherFilter(django_filters.FilterSet):
             return queryset.filter(date__range=[start_date, end_date])
         except ValueError:
             return queryset.none()
+
+"""
+Filter for the mail notificatioin by using date(to and From) or impact_category
+"""      
+class MailNotificationeFilter(django_filters.FilterSet):
+    start_date = DateFilter(field_name="date", lookup_expr="gte", label="From Date")
+    end_date = DateFilter(field_name="date", lookup_expr="lte", label="To Date")
+    impact_category = CharFilter(field_name="impact_category", lookup_expr="icontains", label="Impact Category")
+
+    class Meta:
+        model = models.MailNotificatione
+        fields = ['start_date', 'end_date', 'impact_category']

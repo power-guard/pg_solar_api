@@ -216,3 +216,12 @@ class UtilityDailyProductionSerializer(serializers.ModelSerializer):
         plant_id, created = models.UtilityPlantId.objects.get_or_create(plant_id=plant_id_data['plant_id'])
         validated_data['plant_id'] = plant_id
         return models.UtilityDailyProduction.objects.create(**validated_data)
+
+
+""""
+Serializer for mail notification.
+"""
+class MailNotificationeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.MailNotificatione
+        fields = '__all__'

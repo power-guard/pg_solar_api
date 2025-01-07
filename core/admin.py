@@ -69,3 +69,10 @@ class UtilityDailyProductionAdmin(admin.ModelAdmin):
     list_display = ('plant_id', 'power_production_kwh', 'production_date',
                     'rd','status',  'created_at', 'updated_at','user')
 
+"""Mail notification admin """
+@admin.register(models.MailNotificatione)
+class MailNotificationeAdmin(admin.ModelAdmin):
+    list_display= ('from_field','to','date','mail_date_time','subject','body','impact_category',
+                   'memo','created_at','updated_at','user')
+
+

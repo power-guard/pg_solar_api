@@ -23,6 +23,8 @@ router.register(r'utility-monthly-expense', views.UtilityMonthlyExpenseViewSet, 
 router.register(r'utility-daily-production', views.UtilityDailyProductionViewSet, basename='utility-daily-production')
 router.register(r'utility-plants-list', views.UtilityPlantIdViewSet, basename='utility-plants-list')
 
+router.register(r'mail-notifications', views.MailNotificationeViewSet, basename='mail-notification')
+
 
 # Define the URL patterns
 urlpatterns = [
