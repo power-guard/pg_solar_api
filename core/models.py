@@ -293,7 +293,7 @@ class MailNotificatione(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
 
     class Meta:
-        unique_together = ('from_field', 'to', 'mail_date_time', 'subject')
+        unique_together = [( 'mail_date_time', 'body')]
 
     def __str__(self):
         return f"{self.subject} ({self.date})"
